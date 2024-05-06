@@ -1,0 +1,15 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: '{"access_token":"eyJraWQiOiIwOGVlNzlmOS02OTRjLTRjZTctYTk5MC05M2E1NjdkYTIxODgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJncmVldGluZ3MtYWRtaW4iLCJhdWQiOiJncmVldGluZ3MtYWRtaW4iLCJuYmYiOjE3MTQ4NjMyMjksInNjb3BlIjpbImdyZWV0aW5ncy53cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE3MTQ4NjY4MjksImlhdCI6MTcxNDg2MzIyOSwianRpIjoiNmUzNzU4NjgtNmVhMy00YmY0LTk1NDQtYzI3ZDM1ZDI3YTRkIn0.l1MOmkugQXr3HwLlH6pzpW8JIuYh6flOI_5tiVaQR5Zfy1potSIQeKNkWHizUBgGzrP-OOnakMDR0gITVrURCiC6cDZfkGjrf0b7oRRVJTCkiqNKCKXGvZ8MwUpk7gdouuS8UdqkEEX8pY6UH8UFoFvJe03f5uzG2wEEIFFy5lD55ccV0SyebI_bF59QIxVq9DOeWY-9ZehQZuJ8YAqDEJ0yssv8PLoilmSADid2COyzvyh2QwjZoQJ2uH4nvuu6OKhIagUtqH_pLZFv-Xo4C6QfjBZ9nvuCYHnDT6WEVicrq9W7IMiW5tYRxJv_wrORc0MHa4rWBXgpOR6fiMWr9w","scope":"greetings.write","token_type":"Bearer","expires_in":3599}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: http://localhost:8080/oauth2/token
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":1,"text":"Hey","language":"English"}'
+    content_type: text/plain
+    method: GET
+    status: 200
+    url: http://localhost:8080/v3/greetings/1

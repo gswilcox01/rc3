@@ -1,0 +1,8 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":1,"text":"Hello","language":"English"}'
+    content_type: text/plain
+    method: GET
+    status: 200
+    url: http://localhost:8080/v1/greetings/1?search=bob%2A&page=2&page_size=100

@@ -1,0 +1,15 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: '[{"id":1,"text":"Hello","language":"English"},{"id":2,"text":"Hola","language":"Spanish"},{"id":3,"text":"Bonjour","language":"French"},{"id":4,"text":"Ciao","language":"Italian"},{"id":5,"text":"Hej","language":"Danish"},{"id":6,"text":"Koar","language":"Martian"}]'
+    content_type: text/plain
+    method: GET
+    status: 200
+    url: http://localhost:8080/v1/greetings
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":7,"text":"Koar","language":"Martian"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: http://localhost:8080/v1/greetings

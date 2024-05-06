@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0","setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rc3"
+version = "0.0.3"
+authors = [
+  { name="Gary Wilcox", email="gary@dugan-wilcox.com" },
+]
+description = "Rest CLI (rc)"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "click>=8.1",
+    "requests>=2.31",
+    "jsonschema",
+    "jsonpath-ng",
+    "funcy"
+]
+
+[project.scripts]
+rc = "rc3.cli:cli"

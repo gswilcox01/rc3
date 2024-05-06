@@ -1,0 +1,34 @@
+{
+    "status_code": 200,
+    "time": "98.465ms",
+    "size": {
+        "body": 44,
+        "headers": 410,
+        "total": 454
+    },
+    "headers": {
+        "Vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
+        "Set-Cookie": "search=bob*, page=2, page_size=100",
+        "xxx-movie": "bob",
+        "xxx-page": "71",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Date": "Mon, 06 May 2024 19:15:29 GMT",
+        "Keep-Alive": "timeout=60",
+        "Connection": "keep-alive"
+    },
+    "body": {
+        "json": {
+            "id": 1,
+            "text": "Hello",
+            "language": "English"
+        }
+    },
+    "extract_errors": []
+}
