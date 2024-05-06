@@ -2,7 +2,7 @@
     "$schema": "http://localhost:8000/rc3-collection-0.0.3.json",
     "name": "c1",
     "current_request": "/greetings-basic/greeting.request",
-    "current_environment": "localhost",
+    "current_environment": "dev",
     "auth": {
         "type": "none"
     }
