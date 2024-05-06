@@ -31,11 +31,33 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * Will send the first request named "greeting" in the example Collection
     * Wait for it…  
       * A greetings-demo project is running on Google Cloud Run
-      * And it scales down to 0 instances when there is no demand (i.e. your first request will be SLOW…)
+      * And it scales down to 0 instances when there is no demand (i.e. your first few requests will be SLOW…)
 * cat greetings-basic/greeting.response
     * Will show more verbose output from the "rc send greeting" cmd you just sent
 
-## More examples
+## Sending more requests from the example collection
+* All the requests in the example collection can be sent to the greetings-demo app
+  ```
+  Listing REQUESTS found in current_collection:
+  NUM:   FOLDER:             MET:     NAME:              
+  1*     /greetings-basic    GET      greeting
+  2      /greetings-basic    GET      greetings
+  3      /greetings-basic    POST     new-greeting
+  4      /greetings-basic    DELETE   remove-greeting
+  5      /greetings-basic    PUT      update-greeting
+  6      /greetings-oauth2   GET      greeting
+  7      /greetings-oauth2   POST     mint-admin-token
+  8      /greetings-oauth2   POST     mint-token
+  ```
+* For example:
+    * rc send 1
+    * rc send 2
+    * rc send 3
+* Notes:
+  * Make sure there is a greeting #8 before sending request 4, or you'll get a 404
+  * Make sure you run request 7, before request 6, so you have an access_token
+
+## More command examples
 * View all Collections, Environments, and Requests you have setup on this machine
     * rc list
 * View all Requests for the current Collection (the following commands are equivalent):
@@ -114,7 +136,8 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 
 ## Settings:
 * Settings are only documented in the default settings.json file & the settings schema
-* After running "rc init" see:
+* See: https://json.schemastore.org/rc3-settings-0.0.3.json
+* Or after running "rc init" see:
   * RC_HOME/settings.json
   * RC_HOME/schemas/rc3-settings-0.0.3.json
 
@@ -132,7 +155,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 
 ## CA certificates:
 * By default rc will follow Python Requests default behaviour
-  * Using the Pythin certifi truststore file
+  * Using the Python 'certifi' module truststore file
   * And verifying certs
 * You can turn off cert verification in RC_HOME/settings.json with:
   * "ca_cert_verification": false,

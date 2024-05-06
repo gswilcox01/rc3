@@ -1,6 +1,6 @@
 {
     "status_code": 200,
-    "time": "627.042ms",
+    "time": "189.219ms",
     "size": {
         "body": 222,
         "headers": 376,
@@ -16,7 +16,7 @@
         "x-frame-options": "DENY",
         "content-type": "application/json",
         "Transfer-Encoding": "chunked",
-        "Date": "Mon, 06 May 2024 22:57:48 GMT",
+        "Date": "Mon, 06 May 2024 23:33:37 GMT",
         "Server": "Google Frontend",
         "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
     },
