@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0","setuptools-scm"]
+requires = ["setuptools>=61.0","setuptools-scm","wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,8 @@ version = "0.0.3"
 authors = [
   { name="Gary Wilcox", email="gary@dugan-wilcox.com" },
 ]
+readme = "README.md"
+license = { file = "LICENSE" }
 description = "Rest CLI (rc)"
 requires-python = ">=3.8"
 classifiers = [
@@ -15,6 +17,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+keywords = ["rest", "cli", "postman"]
 dependencies = [
     "click>=8.1",
     "requests>=2.31",
@@ -22,6 +25,13 @@ dependencies = [
     "jsonpath-ng",
     "funcy"
 ]
+
+[project.optional-dependencies]
+build = ["build", "twine"]
+dev   = ["pytest", "responses"]
+
+[project.urls]
+repository = "https://github.com/gswilcox01/rc3"
 
 [project.scripts]
 rc = "rc3.cli:cli"
