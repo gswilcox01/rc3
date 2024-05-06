@@ -70,8 +70,8 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 
 ## Additional Concepts
 ## Authentication
-* Authentication can be defined in a Request, Folder, our in the collection.json file in the root of your collection
-* Inheritance is walked until auth is defined, or the root of the collection is found
+* Authentication can be defined in a Request, Folder, or in the collection.json file in the root of your collection
+* Inheritance is walked until auth is defined, or the root of the collection is found in this order:
     * request > folder > parent folder > collection.json
 * For examples of authentication see the following files in the example collection:
     * /greetings-basic/folder.json
@@ -92,3 +92,62 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * For examples of variable placeholders, see the following files in the example collection:
     * /greetings-basic/greeting.request
     * /greetings-oauth2/mint-admin-token.request
+
+## Extracting values from a response:
+* You can extract a value from any response and save it into the current or global Environment
+* You can extract with either of:
+  1. JsonPath (preferred)
+  2. Python Regex
+* For an example of each see the following files in the example collection:
+  * /examples/example_Extract_JsonPath.request
+  * /examples/example_Extract_Regex.request
+* Both examples above:
+  * Extract a top level "access_token" node from a JSON response
+  * And save the value in a "token" variable in the "global" environment
+* Read more about Json Path here:
+  * https://www.digitalocean.com/community/tutorials/python-jsonpath-examples
+  * https://www.baeldung.com/guide-to-jayway-jsonpath
+  * https://jsonpath.com/
+* Read more about Python Regex here:
+  * https://docs.python.org/3/howto/regex.html
+
+## Settings:
+* Settings are only documented in the default settings.json file & the settings schema
+* After running "rc init" see:
+  * RC_HOME/settings.json
+  * RC_HOME/schemas/rc3-settings-0.0.3.json
+
+## Proxies:
+* rc leverages Python Requests defaults which honors these ENV VARS for proxy settings:
+  * HTTP_PROXY
+  * HTTPS_PROXY
+  * NO_PROXY
+  * ALL_PROXY
+* NO_PROXY/Proxy Bypass:
+  * Note:  IP addresses are not allowed/honored, and hostnames must be used
+  * See: https://github.com/psf/requests/issues/4871
+* See more info about Python Requests Proxies here:
+  * https://requests.readthedocs.io/en/latest/user/advanced/#proxies
+
+## CA certificates:
+* By default rc will follow Python Requests default behaviour
+  * Using the Pythin certifi truststore file
+  * And verifying certs
+* You can turn off cert verification in RC_HOME/settings.json with:
+  * "ca_cert_verification": false,
+* You can set a custom cert ca_bundle file with:
+  * "ca_bundle": "/path/to/ca/bundlefile",
+* You can alternativelly set the path to a ca_bundle file with one of these ENV VARS:
+  * REQUESTS_CA_BUNDLE
+  * CURL_CA_BUNDLE
+* For more details see:
+  * https://requests.readthedocs.io/en/latest/user/advanced/#ssl-cert-verification
+
+## VSCode setup:
+* Associate *.request & *.response files with the JSON editor
+  * Open a file that needs mapping
+  * CTRL + SHIFT + P
+  * Choose "Change Language Mode"
+  * Choose "Configure File Association for '.extension'"
+  * Choose "JSON" from the list
+				
