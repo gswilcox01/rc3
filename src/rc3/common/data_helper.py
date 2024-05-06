@@ -6,6 +6,10 @@ DATA_PACKAGE = 'rc3.data'
 SCHEMA_BASE_URL = "http://localhost:8000"
 SCHEMA_PREFIX = "rc3"
 SCHEMA_VERSION = "0.0.3"
+COLLECTION_FILENAME = "rc-collection.json"
+FOLDER_FILENAME = "rc-folder.json"
+SETTINGS_FILENAME = "rc-settings.json"
+GLOBAL_ENV_FILENAME = "rc-global.json"
 
 
 def get_file(filename):

@@ -1,16 +1,13 @@
 {
     "status_code": 200,
-    "time": "603.421ms",
+    "time": "610.296ms",
     "size": {
-        "body": 44,
-        "headers": 442,
-        "total": 486
+        "body": 43,
+        "headers": 376,
+        "total": 419
     },
     "headers": {
         "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
-        "set-cookie": "search=bob*, page=2, page_size=100",
-        "xxx-movie": "bob",
-        "xxx-page": "71",
         "x-content-type-options": "nosniff",
         "x-xss-protection": "0",
         "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
@@ -19,15 +16,15 @@
         "x-frame-options": "DENY",
         "content-type": "application/json",
         "Transfer-Encoding": "chunked",
-        "Date": "Mon, 06 May 2024 22:57:40 GMT",
+        "Date": "Mon, 06 May 2024 22:57:58 GMT",
         "Server": "Google Frontend",
         "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
     },
     "body": {
         "json": {
-            "id": 1,
-            "text": "Hello",
-            "language": "English"
+            "id": 7,
+            "text": "Koar",
+            "language": "Martian"
         }
     },
     "extract_errors": []

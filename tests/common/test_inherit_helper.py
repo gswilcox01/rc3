@@ -6,6 +6,7 @@ from click import ClickException
 
 from rc3 import cli
 from rc3.common import json_helper, print_helper, env_helper, inherit_helper
+from rc3.common.data_helper import FOLDER_FILENAME
 from tests.commands import test_request
 
 
@@ -50,10 +51,10 @@ def set_folder(auth, _dir=None):
     if _dir is None:
         r, wrapper = test_request.lookup_current()
         _dir = wrapper['_dir']
-    full_filename = os.path.join(_dir, "folder.json")
+    full_filename = os.path.join(_dir, FOLDER_FILENAME)
     folder = {}
     if os.path.exists(full_filename):
-        folder = json_helper.load_and_validate("folder.json", _dir=_dir)
+        folder = json_helper.load_and_validate(FOLDER_FILENAME, _dir=_dir)
 
     folder['auth'] = auth
     json_helper.write_json(full_filename, folder)
@@ -63,7 +64,7 @@ def delete_folder(_dir=None):
     if _dir is None:
         r, wrapper = test_request.lookup_current()
         _dir = wrapper['_dir']
-    full_filename = os.path.join(_dir, "folder.json")
+    full_filename = os.path.join(_dir, FOLDER_FILENAME)
     if os.path.exists(full_filename):
         os.remove(full_filename)
 

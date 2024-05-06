@@ -6,18 +6,19 @@ from funcy import print_durations
 from jsonschema import Draft7Validator
 from referencing import Registry, Resource
 from rc3.common import config_helper, data_helper
-from rc3.common.data_helper import SCHEMA_PREFIX, SCHEMA_VERSION
+from rc3.common.data_helper import SCHEMA_PREFIX, SCHEMA_VERSION, COLLECTION_FILENAME, SETTINGS_FILENAME, \
+    FOLDER_FILENAME, GLOBAL_ENV_FILENAME
 from rc3.common.decorators import rc_print_durations, rc_memoized
 
 
 def guess_schema(filename):
-    if filename == "collection.json":
+    if filename == COLLECTION_FILENAME:
         return 'collection'
-    if filename == "settings.json":
+    if filename == SETTINGS_FILENAME:
         return 'settings'
-    if filename == "global.json":
+    if filename == GLOBAL_ENV_FILENAME:
         return 'environment'
-    if filename == "folder.json":
+    if filename == FOLDER_FILENAME:
         return 'folder'
     if filename.endswith('.request'):
         return 'request'
@@ -29,7 +30,7 @@ def guess_schema(filename):
 @rc_memoized
 def guess_dir(filename):
     home = config_helper.get_config_folder()
-    if filename in ['settings.json', 'global.json']:
+    if filename in [SETTINGS_FILENAME, GLOBAL_ENV_FILENAME]:
         return home
     if filename in os.listdir(home):
         return home
@@ -156,20 +157,18 @@ def write_json(filename, data):
 @rc_memoized
 def read_settings():
     home = config_helper.get_config_folder()
-    filename = 'settings.json'
-    return load_and_validate(filename, _dir=home)
+    return load_and_validate(SETTINGS_FILENAME, _dir=home)
 
 
 def write_settings(settings):
     home = config_helper.get_config_folder()
-    filename = 'settings.json'
-    write_json(os.path.join(home, filename), settings)
+    write_json(os.path.join(home, SETTINGS_FILENAME), settings)
 
 
 @rc_print_durations
 @rc_memoized
 def find_current_collection():
-    settings = load_and_validate('settings.json')
+    settings = load_and_validate(SETTINGS_FILENAME)
     current_name = settings.get('current_collection', None) or None
     collections = settings.get('collections', None) or None
     if current_name is None or collections is None:
@@ -185,7 +184,7 @@ def find_current_collection():
 @rc_memoized
 def read_current_collection():
     current = find_current_collection()
-    c = load_and_validate('collection.json', _dir=current['location'])
+    c = load_and_validate(COLLECTION_FILENAME, _dir=current['location'])
     return c, {
         '_dir': current['location'],
         '_original': c
@@ -194,8 +193,7 @@ def read_current_collection():
 
 def write_collection(c):
     location = c['_dir']
-    filename = 'collection.json'
-    write_json(os.path.join(location, filename), c['_original'])
+    write_json(os.path.join(location, COLLECTION_FILENAME), c['_original'])
 
 
 @rc_print_durations
@@ -314,6 +312,7 @@ def read_environment(name):
     if name == 'current':
         name = c['current_environment']
     if name == 'global':
+        name = 'rc-global'
         env_folder = config_helper.get_config_folder()
     env_filename = name+'.json'
     env = load_and_validate(env_filename, _dir=env_folder)
@@ -321,7 +320,7 @@ def read_environment(name):
 
 
 def write_environment(filename, data):
-    if filename == 'settings.json':
+    if filename == SETTINGS_FILENAME:
         print("wtf?")
         sys.exit(-1)
     _dir = guess_dir(filename)

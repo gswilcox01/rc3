@@ -4,6 +4,7 @@ import re
 import click
 
 from rc3.common import json_helper, print_helper
+from rc3.common.data_helper import FOLDER_FILENAME, COLLECTION_FILENAME
 
 
 def find_auth(wrapper):
@@ -16,7 +17,7 @@ def find_auth(wrapper):
 
 
 def walk_up_folders(_dir):
-    collection_filename = os.path.join(_dir, "collection.json")
+    collection_filename = os.path.join(_dir, COLLECTION_FILENAME)
     if os.path.exists(collection_filename):
         # we;re at the root of the collection stop walking & return something!
         c, wrapper = json_helper.read_current_collection()
@@ -27,9 +28,9 @@ def walk_up_folders(_dir):
                 "type": "none"
             }
 
-    folder_filename = os.path.join(_dir, "folder.json")
+    folder_filename = os.path.join(_dir, FOLDER_FILENAME)
     if os.path.exists(folder_filename):
-        folder = json_helper.load_and_validate("folder.json", _dir=_dir)
+        folder = json_helper.load_and_validate(FOLDER_FILENAME, _dir=_dir)
         if folder.get('auth',{}).get('type','inherit') == 'inherit':
             # RECURSIVE walk_up_folders!
             return walk_up_folders(os.path.join(_dir, os.pardir))

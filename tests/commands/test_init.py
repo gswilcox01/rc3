@@ -5,6 +5,7 @@ import pytest
 
 from rc3 import cli
 from rc3.common import json_helper, config_helper
+from rc3.common.data_helper import SETTINGS_FILENAME, COLLECTION_FILENAME, GLOBAL_ENV_FILENAME
 
 
 def test_init_from_empty(clean_home, clean_empty, runner):
@@ -19,12 +20,12 @@ def test_init_from_empty(clean_home, clean_empty, runner):
 
     # test it exists now AND is empty
     assert os.path.exists(rc_home)
-    assert os.listdir(rc_home) == ['global.json', 'schemas', 'settings.json']
-    assert os.listdir(clean_empty) == ['collection.json',
-                                       'environments',
+    assert os.listdir(rc_home) == [GLOBAL_ENV_FILENAME, SETTINGS_FILENAME, 'schemas']
+    assert os.listdir(clean_empty) == ['environments',
                                        'examples',
                                        'greetings-basic',
-                                       'greetings-oauth2']
+                                       'greetings-oauth2',
+                                       COLLECTION_FILENAME]
     settings = json_helper.read_settings()
     assert settings.get('current_collection') == "c1"
 
@@ -43,7 +44,7 @@ def test_init_from_NOT_empty(clean_home, clean_empty, runner):
 
     # test that we DO STILL init RC_HOME
     assert os.path.exists(rc_home)
-    assert os.listdir(rc_home) == ['global.json', 'schemas', 'settings.json']
+    assert os.listdir(rc_home) == [GLOBAL_ENV_FILENAME, SETTINGS_FILENAME, 'schemas']
     # BUT we DON'T init the CWD, or import a collection
     assert os.listdir(clean_empty) == ['temp.json']
     settings = json_helper.read_settings()

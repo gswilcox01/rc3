@@ -28,7 +28,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
       3. Will initialize a new example Collection if ran from an empty directory.
       4. Will import the current directory if it contains a valid collection.json file.
 * rc send greeting
-    * Will send the first request named "greeting" in your collection
+    * Will send the first request named "greeting" in the example Collection
     * Wait for it…  
       * A greetings-demo project is running on Google Cloud Run
       * And it scales down to 0 instances when there is no demand (i.e. your first request will be SLOW…)
@@ -101,9 +101,10 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * For an example of each see the following files in the example collection:
   * /examples/example_Extract_JsonPath.request
   * /examples/example_Extract_Regex.request
-* Both examples above:
+  * /greetings-oauth2/mint-admin-token.request
+* All the examples above:
   * Extract a top level "access_token" node from a JSON response
-  * And save the value in a "token" variable in the "global" environment
+  * And save the value in a variable named "token" in the "global" environment
 * Read more about Json Path here:
   * https://www.digitalocean.com/community/tutorials/python-jsonpath-examples
   * https://www.baeldung.com/guide-to-jayway-jsonpath

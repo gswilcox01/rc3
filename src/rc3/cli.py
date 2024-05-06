@@ -2,6 +2,7 @@ import os
 import click
 
 from rc3.common import json_helper, config_helper, rc_globals
+from rc3.common.data_helper import SETTINGS_FILENAME
 
 cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "commands"))
 
@@ -48,9 +49,9 @@ def cli(ctx, verbose):
 
     # Note: this next cmd will always create RC_HOME / ~/.rc if it doesn't exist
     home = config_helper.get_config_folder()
-    dest = os.path.join(home, 'settings.json')
+    dest = os.path.join(home, SETTINGS_FILENAME)
     if os.path.exists(dest):
         # validate the RC/settings.json file (& sys.exit() if invalid)
-        json_helper.load_and_validate('settings.json')
+        json_helper.load_and_validate(SETTINGS_FILENAME)
 
 

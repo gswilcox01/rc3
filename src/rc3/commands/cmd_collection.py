@@ -4,6 +4,7 @@ import click
 
 from rc3.commands import cmd_list
 from rc3.common import json_helper, print_helper
+from rc3.common.data_helper import COLLECTION_FILENAME
 
 
 @click.command("collection", short_help="Manage COLLECTIONS defined in settings.")
@@ -78,7 +79,7 @@ def lookup_or_prompt(name, prompt="Which COLLECTION do you want to pick?"):
 
 def print_info(name):
     wrapper = lookup_collection(name)
-    c = json_helper.load_and_validate('collection.json', _dir=wrapper.get('location'))
+    c = json_helper.load_and_validate(COLLECTION_FILENAME, _dir=wrapper.get('location'))
     print_helper.print_json(c)
 
 

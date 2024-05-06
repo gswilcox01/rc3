@@ -1,16 +1,13 @@
 {
     "status_code": 200,
-    "time": "603.421ms",
+    "time": "744.216ms",
     "size": {
         "body": 44,
-        "headers": 442,
-        "total": 486
+        "headers": 376,
+        "total": 420
     },
     "headers": {
         "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
-        "set-cookie": "search=bob*, page=2, page_size=100",
-        "xxx-movie": "bob",
-        "xxx-page": "71",
         "x-content-type-options": "nosniff",
         "x-xss-protection": "0",
         "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
@@ -19,7 +16,7 @@
         "x-frame-options": "DENY",
         "content-type": "application/json",
         "Transfer-Encoding": "chunked",
-        "Date": "Mon, 06 May 2024 22:57:40 GMT",
+        "Date": "Mon, 06 May 2024 23:09:56 GMT",
         "Server": "Google Frontend",
         "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
     },
