@@ -1,5 +1,5 @@
 {
-    "$schema": "http://localhost:8000/rc3-request-0.0.3.json",
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
     "comment": "no comment",
     "method": "GET",
     "url": "http://localhost:8080/v1/greetings",
