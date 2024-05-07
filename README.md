@@ -17,8 +17,10 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * VSCode (optional, but highly recommended)
 * Install
     * pip install rc3
+* Windows User?
+    * See:  [Windows Setup Issues](WINDOWS_SETUP.md)
 
-## RC Setup & Sending your first request
+## Setup & Sending your first request
 * mkdir example-collection
 * cd example-collection
 * rc init
