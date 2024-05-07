@@ -38,7 +38,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * Will show more verbose output from the "rc send greeting" cmd you just sent
 
 ## Sending more requests from the example collection
-* All the requests in the example collection can be sent to the greetings-demo app
+* All the requests in the example collection can be sent to the greetings-demo app running on Google Cloud Run
   ```
   Listing REQUESTS found in current_collection:
   NUM:   FOLDER:             MET:     NAME:              
