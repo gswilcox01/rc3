@@ -23,7 +23,9 @@ class ComplexCLI(click.Group):
         aliases = {
             'r': 'request',
             'c': 'collection',
-            'e': 'environment'
+            'e': 'environment',
+            'g': 'global',
+            'globals': 'global'
         }
         name = aliases.get(name, name)
         try:

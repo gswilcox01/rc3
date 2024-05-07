@@ -74,7 +74,7 @@ def internal_edit(r):
     if new_string is not None:
         new_e = json_helper.parse_json(new_string)
         if new_e is None:
-            raise click.ClickException("new REQUEST must be valid JSON.")
+            raise click.ClickException("new ENVIRONMENT must be valid JSON.")
         if json_helper.validate(new_e, 'environment'):
             return new_e
     else:
