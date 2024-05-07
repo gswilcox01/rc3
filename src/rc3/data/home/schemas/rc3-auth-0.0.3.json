@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://localhost:8000/rc3-auth-0.0.3.json",
+    "$id": "https://json.schemastore.org/rc3-auth-0.0.3.json",
     "title": "RC Auth",
     "description": "RC auth that can be stored at Collection, Folder, or Request levels",
     "type": "object",
