@@ -79,7 +79,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   ```
   $ rc request --list
   Listing REQUESTS found in current_collection:
-  NUM:   FOLDER:             MET:     NAME:              
+  NUM:   FOLDER:             METHOD:  NAME:              
   1*     /greetings-basic    GET      greeting
   2      /greetings-basic    GET      greetings
   3      /greetings-basic    POST     new-greeting

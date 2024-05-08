@@ -70,7 +70,7 @@ def list_requests():
     click.echo("Listing REQUESTS found in current_collection:")
 
     # now display table
-    header = ['NUM:', 'FOLDER:', 'MET:', 'NAME:']
+    header = ['NUM:', 'FOLDER:', 'METHOD:', 'NAME:']
     fields = ['display_num', 'folder', 'method', 'name']
     print_helper.print_formatted_table(header, fields, _list)
 
