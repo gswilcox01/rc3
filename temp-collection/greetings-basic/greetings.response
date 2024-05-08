@@ -1,0 +1,53 @@
+{
+    "status_code": 200,
+    "time": "605.681ms",
+    "size": {
+        "body": 222,
+        "headers": 376,
+        "total": 598
+    },
+    "headers": {
+        "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+        "x-content-type-options": "nosniff",
+        "x-xss-protection": "0",
+        "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+        "pragma": "no-cache",
+        "expires": "0",
+        "x-frame-options": "DENY",
+        "content-type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Date": "Wed, 08 May 2024 19:32:39 GMT",
+        "Server": "Google Frontend",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+    },
+    "body": {
+        "json": [
+            {
+                "id": 1,
+                "text": "Hello",
+                "language": "English"
+            },
+            {
+                "id": 2,
+                "text": "Hola",
+                "language": "Spanish"
+            },
+            {
+                "id": 3,
+                "text": "Bonjour",
+                "language": "French"
+            },
+            {
+                "id": 4,
+                "text": "Ciao",
+                "language": "Italian"
+            },
+            {
+                "id": 5,
+                "text": "Hej",
+                "language": "Danish"
+            }
+        ]
+    },
+    "extract_errors": []
+}
