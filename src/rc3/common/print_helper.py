@@ -48,7 +48,8 @@ def print_json_or_text(response):
 def print_text(response):
     try:
         if len(response.text) == 0:
-            pass
+            print("Status: " + str(response.status_code))
+            print("No response body.")
         else:
             print(response.text)
     except socket.error as e:

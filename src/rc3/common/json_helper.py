@@ -1,7 +1,9 @@
 import json
 import os
 import sys
+from json import JSONDecodeError
 
+import click
 from funcy import print_durations
 from jsonschema import Draft7Validator
 from referencing import Registry, Resource
@@ -89,7 +91,9 @@ def load_and_validate(filename, schema=None, _dir=None):
     if validator.is_valid(_dict):
         return _dict
 
-    print(filename + " is invalid:")
+    print()
+    print("Error: file doesn't pass JSON schema validation: " + file)
+    # print(filename + " is invalid:")
     for error in validator.iter_errors(_dict):
         # print(vars(error)) # use to look at what other attributes are available...
         print(" * json path: /" + '.'.join(error.path))
@@ -136,8 +140,13 @@ def check_schema(_file):
 def read_json(filename):
     if not os.path.exists(filename):
         return None
-    with open(filename, 'r') as f:
-        return json.load(f)
+    try:
+        with open(filename, 'r') as f:
+            return json.load(f)
+    except JSONDecodeError as e:
+        print()
+        print(type(e).__name__ + " " + str(e))
+        raise click.ClickException("unable to load file as JSON: " + filename)
 
 
 def parse_json(json_string):

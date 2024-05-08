@@ -5,6 +5,7 @@ import click
 import requests
 from jsonpath_ng import parse
 from requests.auth import HTTPBasicAuth, AuthBase
+from requests.exceptions import SSLError
 
 from rc3.commands import cmd_request
 from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals
@@ -91,15 +92,22 @@ def send(wrapper):
     if settings.get('headers_send_nocache', True):
         headers['Cache-Control'] = 'no-cache'
 
-    response = requests.request(request.get('method'), request.get('url'),
-                                headers=headers,
-                                json=_json,
-                                auth=create_auth(inherit_helper.find_auth(wrapper)),
-                                params=request.get('params', None),
-                                data=_data,
-                                timeout=timeout,
-                                allow_redirects=allow_redirects,
-                                verify=verify)
+    try:
+        response = requests.request(request.get('method'), request.get('url'),
+                                    headers=headers,
+                                    json=_json,
+                                    auth=create_auth(inherit_helper.find_auth(wrapper)),
+                                    params=request.get('params', None),
+                                    data=_data,
+                                    timeout=timeout,
+                                    allow_redirects=allow_redirects,
+                                    verify=verify)
+    except SSLError as e:
+        print()
+        print(type(e).__name__ + ": " + str(e))
+        click.echo("SSLError: Try setting REQUESTS_CA_BUNDLE, CURL_CA_BUNDLE, or rc-settings.ca_bundle")
+        click.echo("See: https://github.com/gswilcox01/rc3/tree/master?tab=readme-ov-file#ca-certificates")
+        raise click.Abort
 
     process_output(wrapper, response)
 

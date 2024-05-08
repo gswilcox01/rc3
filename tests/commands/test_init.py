@@ -27,7 +27,7 @@ def test_init_from_empty(clean_home, clean_empty, runner):
                                        'greetings-oauth2',
                                        COLLECTION_FILENAME]
     settings = json_helper.read_settings()
-    assert settings.get('current_collection') == "c1"
+    assert settings.get('current_collection') == "example-collection"
 
 
 def test_init_from_NOT_empty(clean_home, clean_empty, runner):
