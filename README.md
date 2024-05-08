@@ -21,25 +21,63 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * See:  [Windows Setup Issues](WINDOWS_SETUP.md)
 
 ## Setup & Sending your first request
-* mkdir example-collection
-* cd example-collection
-* rc init
-    * Will do 0-4 things
-      1. Will create the RC_HOME directory if it doesn't exist.
-      2. Will create RC_HOME/settings, global env, and schemas dir if they don't exist.
-      3. Will initialize a new example Collection if ran from an empty directory.
-      4. Will import the current directory if it contains a valid collection.json file.
-* rc send greeting
-    * Will send the first request named "greeting" in the example Collection
-    * Wait for it…  
-      * A greetings-demo project is running on Google Cloud Run
-      * And it scales down to 0 instances when there is no demand (i.e. your first few requests will be SLOW…)
-* cat greetings-basic/greeting.response
-    * Will show more verbose output from the "rc send greeting" cmd you just sent
+* First create an empty directory somewhere (any name & location is fine)
+  ```
+  $ mkdir temp-collection
+  $ cd temp-collection
+  ```
+* Next run "rc init" to do 0-4 things
+  1. Will create the RC_HOME directory if it doesn't exist.
+  2. Will create RC_HOME/settings, global env, and schemas dir if they don't exist.
+  3. Will initialize a new example Collection if ran from an empty directory.
+  4. Will import the current directory if it contains a valid collection.json file.
+  ```
+  $ rc init
+  Creating C:\Users\Gary\.rc\rc-settings.json
+  Creating C:\Users\Gary\.rc\rc-global.json                            
+  Creating C:\Users\Gary\.rc\schemas                                   
+  CWD is empty, creating sample Collection here: C:\dev\temp-collection
+  Importing collection from: C:\dev\temp-collection
+  Adding collection to global settings: example-collection
+  ```
+* Next send the "greeting" request with the rc send command
+  * Wait for it…
+    * A greetings-demo project is running on Google Cloud Run
+    * And it scales down to 0 instances when there is no demand (i.e. your first few requests will be SLOW…)  
+  ```
+  $ rc send greeting
+  {                        
+      "id": 1,             
+      "text": "Hello",     
+      "language": "English"
+  }
+  ```
+* Next "cat" the generated greeting.response file that will have more verbose output from the send command
+  ```
+  $ cat greetings-basic/greeting.response
+  {                                                                                     
+    "status_code": 200,                                                               
+    "time": "845.772ms",                                                              
+    "size": {                                                                         
+        "body": 44,                                                                   
+        "headers": 442,                                                               
+        "total": 486                                                                  
+    },                                                                                
+    "headers": {                                                                      
+        "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+        "Date": "Wed, 08 May 2024 15:06:54 GMT",                                      
+        "Server": "Google Frontend",
+  
+    ...
+                                                    
+  }
+  ``` 
 
 ## Sending more requests from the example collection
 * All the requests in the example collection can be sent to the greetings-demo app running on Google Cloud Run
+* To view all requests in the example collection run "rc request --list"
   ```
+  $ rc request --list
   Listing REQUESTS found in current_collection:
   NUM:   FOLDER:             MET:     NAME:              
   1*     /greetings-basic    GET      greeting
@@ -51,13 +89,15 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   7      /greetings-oauth2   POST     mint-admin-token
   8      /greetings-oauth2   POST     mint-token
   ```
-* For example:
-    * rc send 1
-    * rc send 2
-    * rc send 3
+* Try sending requests by NUMBER instead of by NAME using these commands:
+  ```
+  $ rc send 1
+  $ rc send 2
+  $ rc send 3
+  ```
 * Notes:
   * Make sure there is a greeting #8 before sending request 4, or you'll get a 404
-  * Make sure you run request 7, before request 6, so you have an access_token
+  * Make sure you run request 7, before request 6, so you have a {{ token }} available in your global environment
 
 ## More command examples
 * View all Collections, Environments, and Requests you have setup on this machine

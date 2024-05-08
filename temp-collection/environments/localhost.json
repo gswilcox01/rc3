@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-environment-0.0.3.json",
+    "$schema": "http://localhost:8000/rc3-environment-0.0.3.json",
     "baseUrl": "http://localhost:8080",
     "property1": "value1",
     "property2": "value2",

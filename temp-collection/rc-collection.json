@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-collection-0.0.3.json",
+    "$schema": "http://localhost:8000/rc3-collection-0.0.3.json",
     "name": "c1",
     "current_request": "/greetings-basic/greeting.request",
     "current_environment": "dev",

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-folder-0.0.3.json",
+    "$schema": "http://localhost:8000/rc3-folder-0.0.3.json",
     "comment": "Example folder level auth that all requests in this folder & sub-folders will inherit by default",
     "auth": {
         "type": "basic",
