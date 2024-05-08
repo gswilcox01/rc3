@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rc3"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="Gary Wilcox", email="gary@dugan-wilcox.com" },
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
 description = "Rest CLI (rc)"
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
