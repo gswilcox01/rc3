@@ -201,9 +201,9 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   * And verifying certs
 * You can turn off cert verification in RC_HOME/settings.json with:
   * "ca_cert_verification": false,
-* You can set a custom cert ca_bundle file with:
+* You can set a custom cert ca_bundle file in RC_HOME/settings.json with:
   * "ca_bundle": "/path/to/ca/bundlefile",
-* You can alternativelly set the path to a ca_bundle file with one of these ENV VARS:
+* You can alternatively set the path to a ca_bundle file with one of these ENV VARS:
   * REQUESTS_CA_BUNDLE
   * CURL_CA_BUNDLE
 * For more details see:
