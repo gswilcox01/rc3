@@ -52,7 +52,7 @@ def import_collection():
                     defaults_counter += 1
                     shutil.copy(default_file, new_file)
     if defaults_counter > 0:
-        print(f"{defaults_counter} default environment(s) initialized in your collection.")
+        print(f"{defaults_counter} default environment(s) initialized in your collection")
 
     # get "name" from json, or use cwd directory name
     parts = os.path.split(cwd)

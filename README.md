@@ -38,6 +38,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   Creating C:\Users\Gary\.rc\schemas                                   
   CWD is empty, creating sample Collection here: C:\dev\temp-collection
   Importing collection from: C:\dev\temp-collection
+  2 default environment(s) initialized in your collection
   Adding collection to global settings: example-collection
   ```
 * Next send the "greeting" request with the rc send command
