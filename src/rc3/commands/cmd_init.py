@@ -1,4 +1,6 @@
 import os
+import shutil
+
 import click
 from rc3.common import config_helper, json_helper, data_helper
 from rc3.common.data_helper import SETTINGS_FILENAME, COLLECTION_FILENAME, GLOBAL_ENV_FILENAME
@@ -35,6 +37,18 @@ def import_collection():
     collection_dict = json_helper.load_and_validate(COLLECTION_FILENAME, _dir=cwd)
     if collection_dict is None:
         return
+
+    # for any .defaults environments in the collection, copy them to .json (i.e. make a real environment)
+    # note: there should also be a .gitignore in the env folder, so .json doesn't get committed
+    env_folder = os.path.join(cwd, 'environments')
+    for dirpath, dirnames, files in os.walk(env_folder):
+        for file in files:
+            if file.endswith('.defaults'):
+                name = file.split('.')[-2]
+                default_file = os.path.join(dirpath, file)
+                new_file = os.path.join(dirpath, name + ".json")
+                if not os.path.exists(new_file):
+                    shutil.copy(default_file, new_file)
 
     # get "name" from json, or use cwd directory name
     parts = os.path.split(cwd)
