@@ -1,0 +1,10 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "GET",
+    "url": "http://localhost:8080/v3/greetings/1",
+    "auth": {
+        "type": "token",
+        "token_header": "Authorization",
+        "token_value": "Bearer eyJraWQiOiJjMWU3MTIyYi0xZGNjLTQ0NGUtYTIxYS0yNzE5NjkzOTAzNTciLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJncmVldGluZ3MtYWRtaW4iLCJhdWQiOiJncmVldGluZ3MtYWRtaW4iLCJuYmYiOjE3MTQ0MzA1MjcsInNjb3BlIjpbImdyZWV0aW5ncy53cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3MTQ0MzQxMjcsImlhdCI6MTcxNDQzMDUyNywianRpIjoiMzEyMGVmZGItMTdhZS00YTYwLTlmY2QtZDQxNWViZmU1NTU1In0.yjJXlMqXZdLc6prXpXhgV7R2vNxC0AunKEru1Ua3n57Gw4K471hHv7LVssX8j9pYQtdw5W6-XzyIBVirgErE2RbnypChfA5EjJrj0jCD0BF5DOfcowkb6NOTsqqB7qtvaCm2VPO48jpWuyOsKBaZ3GP-cVqOyCeYypyYMg620tqPU-ZAMLqEz8Xxp12fpEaWncnm5_dBVzXTmZP9iqp4VvH0uXKZ9WSLvl7QmUSudkBUJTxTelkMglkHoLUgtJpM1ZpL_F2MtQs2ZDL_BM2Oycq8KCF9iDq8F0k3TXadigz4tpAn39nir1kh1aBssig1KYkl8Hu8n6gSD1nFNO1mrw"
+    }
+}

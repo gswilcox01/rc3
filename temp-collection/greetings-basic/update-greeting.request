@@ -1,0 +1,15 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "PUT",
+    "url": "{{baseUrl}}/v1/greetings/1",
+    "auth": {
+        "type": "inherit"
+    },
+    "body": {
+        "json": {
+            "id": 1,
+            "text": "Hey",
+            "language": "English"
+        }
+    }
+}

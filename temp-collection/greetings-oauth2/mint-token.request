@@ -1,0 +1,17 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "POST",
+    "url": "{{baseUrl}}/oauth2/token",
+    "form_data": {
+        "grant_type": "client_credentials",
+        "client_id": "greetings-client",
+        "client_secret": "{{ read_secret }}",
+        "scope": "greetings.read"
+    },
+    "save_responses": false,
+    "extract": {
+        "json_path": "$.access_token",
+        "env": "global",
+        "var": "token"
+    }
+}

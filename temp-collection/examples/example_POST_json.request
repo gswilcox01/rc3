@@ -1,0 +1,12 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "POST",
+    "url": "http://localhost:8080/v1/greetings",
+    "body": {
+        "json": {
+            "id": 0,
+            "name": "Yo",
+            "language": "Cool Cat"
+        }
+    }
+}

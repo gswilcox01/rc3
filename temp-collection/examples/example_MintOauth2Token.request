@@ -1,0 +1,15 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "POST",
+    "url": "http://localhost:9000/oauth2/token",
+    "form_data": {
+        "grant_type": "client_credentials",
+        "client_id": "greetings-client",
+        "client_secret": "secret1"
+    },
+    "extract": {
+        "json_path": "$.access_token",
+        "env": "global",
+        "var": "token"
+    }
+}

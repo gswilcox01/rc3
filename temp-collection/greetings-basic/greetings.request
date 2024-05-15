@@ -1,0 +1,8 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "GET",
+    "url": "{{baseUrl}}/v1/greetings",
+    "auth": {
+        "type": "inherit"
+    }
+}

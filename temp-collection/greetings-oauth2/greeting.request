@@ -1,0 +1,9 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "GET",
+    "url": "{{baseUrl}}/v3/greetings/1",
+    "auth": {
+        "type": "bearer",
+        "bearer_token": "{{token}}"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-folder-0.0.3.json",
+    "comment": "folder.json is optional, and is only used to define an inheritable auth object",
+    "auth": {
+        "type": "basic",
+        "username": "gary",
+        "password": "is-cool"
+    }
+}
