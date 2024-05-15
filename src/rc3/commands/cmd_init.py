@@ -41,6 +41,7 @@ def import_collection():
     # for any .defaults environments in the collection, copy them to .json (i.e. make a real environment)
     # note: there should also be a .gitignore in the env folder, so .json doesn't get committed
     env_folder = os.path.join(cwd, 'environments')
+    defaults_counter = 0
     for dirpath, dirnames, files in os.walk(env_folder):
         for file in files:
             if file.endswith('.defaults'):
@@ -48,7 +49,10 @@ def import_collection():
                 default_file = os.path.join(dirpath, file)
                 new_file = os.path.join(dirpath, name + ".json")
                 if not os.path.exists(new_file):
+                    defaults_counter += 1
                     shutil.copy(default_file, new_file)
+    if defaults_counter > 0:
+        print(f"{defaults_counter} default environment(s) initialized in your collection.")
 
     # get "name" from json, or use cwd directory name
     parts = os.path.split(cwd)
