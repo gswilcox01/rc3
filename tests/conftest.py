@@ -41,6 +41,6 @@ def clean_empty(clean_home):
 @pytest.fixture(scope="function")
 def example_collection(clean_empty, runner):
     os.chdir(clean_empty)
-    result = runner.invoke(cli.cli, ['init'])
+    result = runner.invoke(cli.cli, ['new'], input='example-collection\n\n')
     assert result.exit_code == 0
     yield clean_empty

@@ -11,35 +11,53 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * The HTTP response body to standard out
     * A detailed *.response file saved in the same directory as the *.request file sent
 
-## Installation
+## Installation & Upgrade
 * Pre-reqs
     * Python 3.12+ (required)
     * VSCode (optional, but highly recommended)
 * Install
     * pip install rc3
+* Upgrade
+    * pip install --upgrade rc3
 * Windows User?
     * See:  [Windows Setup Issues](WINDOWS_SETUP.md)
 
-## Setup & Sending your first request
+## Setup & Send your first request
 * First create an empty directory somewhere (any name & location is fine)
   ```
   $ mkdir temp-collection
   $ cd temp-collection
   ```
-* Next run "rc init" to do 0-4 things
-  1. Will create the RC_HOME directory if it doesn't exist.
-  2. Will create RC_HOME/settings, global env, and schemas dir if they don't exist.
-  3. Will initialize a new example Collection if ran from an empty directory.
-  4. Will import the current directory if it contains a valid collection.json file.
+* Next run "rc new" to create a new collection
+  * Choose all default values, and you'll get an example collection you can explore
   ```
-  $ rc init
-  Creating C:\Users\Gary\.rc\rc-settings.json
-  Creating C:\Users\Gary\.rc\rc-global.json                            
-  Creating C:\Users\Gary\.rc\schemas                                   
-  CWD is empty, creating sample Collection here: C:\dev\temp-collection
-  Importing collection from: C:\dev\temp-collection
-  2 default environment(s) initialized in your collection
-  Adding collection to global settings: example-collection
+  $ rc new
+  Enter a NAME for this COLLECTION [temp-collection]:
+  Include example Requests in your new collection? [Y/n]:
+  Importing collection into RC_HOME/rc-settings.json
+  Collection 'temp-collection' has been successfully imported, try 'rc list' next...
+  ```
+* Next run "rc list" to see what's in the example collection you just created
+  ```
+  $ rc list
+  Listing COLLECTIONS found in settings.json:
+  NUM:   NAME:             LOCATION:                             
+  1      example-rc        C:\git\example-rc
+  2*     temp-collection   C:\temp-collection
+  Listing ENVIRONMENTS found in current_collection:
+  NUM:   NAME:       baseUrl:
+  1*     dev         https://greetings-mvrsygo3gq-uc.a.run.app
+  2      localhost   http://localhost:8080
+  Listing REQUESTS found in current_collection:
+  NUM:   FOLDER:             METHOD:   NAME:
+  1*     /greetings-basic    GET       greeting
+  2      /greetings-basic    GET       greetings
+  3      /greetings-basic    POST      new-greeting
+  4      /greetings-basic    DELETE    remove-greeting
+  5      /greetings-basic    PUT       update-greeting
+  6      /greetings-oauth2   GET       greeting
+  7      /greetings-oauth2   POST      mint-admin-token
+  8      /greetings-oauth2   POST      mint-token
   ```
 * Next send the "greeting" request with the rc send command
   * Wait for it…
@@ -134,6 +152,27 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * rc environment --help
 
 ## Additional Concepts
+## Import an existing collection from a git repo
+* The example collection you created with the "rc new" command is also checked into a git repository here:
+* https://github.com/gswilcox01/example-rc
+* You can clone & import collections following the example below:
+  ```
+  $ git clone https://github.com/gswilcox01/example-rc.git
+  Cloning into 'example-rc'...
+  remote: Enumerating objects: 33, done.
+  remote: Counting objects: 100% (33/33), done.
+  remote: Compressing objects: 100% (17/17), done.
+  remote: Total 33 (delta 14), reused 33 (delta 14), pack-reused 0
+  Receiving objects: 100% (33/33), 4.87 KiB | 262.00 KiB/s, done.
+  Resolving deltas: 100% (14/14), done.
+  
+  $ cd example-rc 
+  
+  $ rc import
+  Importing collection into RC_HOME/rc-settings.json
+  Collection 'example-rc' has been successfully imported, try 'rc list' next...
+  ```
+
 ## Authentication
 * Authentication can be defined in a Request, Folder, or in the collection.json file in the root of your collection
 * Inheritance is walked until auth is defined, or the root of the collection is found in this order:

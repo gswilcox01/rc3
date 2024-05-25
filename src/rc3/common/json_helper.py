@@ -122,6 +122,7 @@ def validate(_dict, schema=None):
     sys.exit()
 
 
+@rc_print_durations
 def validate_schemas():
     check_schema(data_helper.get_schema_file('auth'))
     check_schema(data_helper.get_schema_file('collection'))
@@ -200,9 +201,19 @@ def read_current_collection():
     }
 
 
-def write_collection(c):
-    location = c['_dir']
-    write_json(os.path.join(location, COLLECTION_FILENAME), c['_original'])
+def read_collection(_dir=None):
+    if _dir is None:
+        _dir = os.getcwd()
+    c = load_and_validate(COLLECTION_FILENAME, _dir=_dir)
+    return c, {
+        '_dir': _dir,
+        '_original': c
+    }
+
+
+def write_collection(wrapper):
+    location = wrapper['_dir']
+    write_json(os.path.join(location, COLLECTION_FILENAME), wrapper['_original'])
 
 
 @rc_print_durations

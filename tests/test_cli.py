@@ -12,7 +12,7 @@ def test_first_run_help(runner):
     assert "Show this message and exit" in result.output
 
 
-def test_any_command_creates_empty_rc_home(clean_home, runner):
+def test_any_command_creates_initialized_rc_home(clean_home, runner):
     # pre-test it doesn't exist from a pytest fixture
     rc_home = os.path.join(clean_home, '.rc')
     assert not os.path.exists(rc_home)
@@ -24,7 +24,7 @@ def test_any_command_creates_empty_rc_home(clean_home, runner):
 
     # test it exists now AND is empty
     assert os.path.exists(rc_home)
-    assert len(os.listdir(rc_home)) == 0
+    assert len(os.listdir(rc_home)) == 3
 
 
 def test_shortcuts_work(example_collection, runner):

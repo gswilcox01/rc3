@@ -47,9 +47,12 @@ def cli(ctx, verbose):
     cli_options['verbose'] = verbose
 
     # validate all the schemas in the project
-    json_helper.validate_schemas()
+    # json_helper.validate_schemas()
 
-    # Note: this next cmd will always create RC_HOME / ~/.rc if it doesn't exist
+    # create RC_HOME, settings, global.env, /schema dir (if missing/needed)
+    config_helper.init_rc_home()
+
+    # FAILFAST if bad RC_HOME/settings.json
     home = config_helper.get_config_folder()
     dest = os.path.join(home, SETTINGS_FILENAME)
     if os.path.exists(dest):
