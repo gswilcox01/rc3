@@ -1,6 +1,7 @@
 import os
 import re
 
+import click
 import pytest
 from click import ClickException
 
@@ -150,3 +151,94 @@ def test_global_wins(example_collection, runner):
     assert len(re.findall(r'current_bob', json_string)) == 0
     assert len(re.findall(r'global_bob', json_string)) == 1
     assert len(re.findall(r'galactic_bob', json_string)) == 0
+
+
+def test_recursive_sub(example_collection, runner):
+    r, wrapper = test_request.lookup_current()
+    r['auth']["username"] = "{{ bob }}"
+    add_to_current("bob", "{{linda}}")
+    add_to_current("linda", "miller")
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 1
+    assert len(re.findall(r'linda', json_string)) == 0
+    assert len(re.findall(r'miller', json_string)) == 0
+
+    env_helper.process_subs(wrapper)
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 0
+    assert len(re.findall(r'linda', json_string)) == 0
+    assert len(re.findall(r'miller', json_string)) == 1
+
+
+def test_3x_recursive_sub(example_collection, runner):
+    r, wrapper = test_request.lookup_current()
+    r['auth']["username"] = "{{ bob }}"
+    add_to_current("bob", "{{linda}}")
+    add_to_current("linda", "{{stacy}}")
+    add_to_current("stacy", "Wilcox")
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 1
+    assert len(re.findall(r'linda', json_string)) == 0
+    assert len(re.findall(r'stacy', json_string)) == 0
+    assert len(re.findall(r'Wilcox', json_string)) == 0
+
+    env_helper.process_subs(wrapper)
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 0
+    assert len(re.findall(r'linda', json_string)) == 0
+    assert len(re.findall(r'stacy', json_string)) == 0
+    assert len(re.findall(r'Wilcox', json_string)) == 1
+
+
+def test_double_sub(example_collection, runner):
+    r, wrapper = test_request.lookup_current()
+    r['auth']["username"] = "{{ bob }} {{ linda }}"
+    add_to_current("bob", "Miller")
+    add_to_current("linda", "Indermuehle")
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 1
+    assert len(re.findall(r'linda', json_string)) == 1
+    assert len(re.findall(r'Miller', json_string)) == 0
+    assert len(re.findall(r'Indermuehle', json_string)) == 0
+
+    env_helper.process_subs(wrapper)
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 0
+    assert len(re.findall(r'linda', json_string)) == 0
+    assert len(re.findall(r'Miller Indermuehle', json_string)) == 1
+
+
+def test_infinite_loop_sub(example_collection, runner):
+    r, wrapper = test_request.lookup_current()
+    r['auth']["username"] = "{{ bob }}"
+    add_to_current("bob", "{{linda}}")
+    add_to_current("linda", "{{bob}}")
+
+    json_string = print_helper.get_json_string(r)
+    assert len(re.findall(r'{{ bob }}', json_string)) == 1
+    assert len(re.findall(r'linda', json_string)) == 0
+    assert len(re.findall(r'miller', json_string)) == 0
+
+    with pytest.raises(click.exceptions.ClickException) as exception_info:
+        env_helper.process_subs(wrapper)
+
+    assert "has caused an infinite loop during lookup" in str(exception_info.value)
+
+
+def test_3x_recursive_loop_caught(example_collection, runner):
+    r, wrapper = test_request.lookup_current()
+    r['auth']["username"] = "{{ bob }}"
+    add_to_current("bob", "{{linda}}")
+    add_to_current("linda", "{{stacy}}")
+    add_to_current("stacy", "{{bob}}")
+
+    with pytest.raises(click.exceptions.ClickException) as exception_info:
+        env_helper.process_subs(wrapper)
+
+    assert "has caused an infinite loop during lookup" in str(exception_info.value)
