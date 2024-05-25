@@ -2,7 +2,7 @@ import json
 import os
 import click
 
-from rc3.commands import cmd_list
+from rc3.commands import cmd_list, cmd_send
 from rc3.common import json_helper, print_helper
 
 
@@ -12,8 +12,9 @@ from rc3.common import json_helper, print_helper
 @click.option('-i', '--info', is_flag=True, default=False, help="Display json of current REQUEST.")
 @click.option('-p', '--pick', is_flag=True, default=False, help="Pick an item as current REQUEST.")
 @click.option('-e', '--edit', is_flag=True, default=False, help="Edit a REQUEST with system editor.")
+@click.option('-s', '--send', is_flag=True, default=False, help="Send the current REQUEST.")
 @click.argument('request_name', type=str, required=False)
-def cli(_list, new, info, pick, edit, request_name):
+def cli(_list, new, info, pick, edit, send, request_name):
     """\b
     Manages REQUEST objects/files in the current collection.
 
@@ -30,17 +31,24 @@ def cli(_list, new, info, pick, edit, request_name):
     elif new:
         click.echo("NOT IMPLEMENTED! Please use VSCode to edit your collection.")
     elif edit:
-        edit_request(request_name)
+        r = edit_request(request_name)
+        if send: cmd_send.send(r)
     elif info:
         print_info(request_name)
     elif pick:
-        pick_request(request_name)
+        r = pick_request(request_name)
+        if send: cmd_send.send(r)
+    elif send:
+        cmd_send.lookup_and_send(request_name)
     elif request_name is None:
         # DEFAULT to list() if no REQUEST_NAME
         cmd_list.list_requests()
     else:
         # DEFAULT to pick() if REQUEST_NAME
         pick_request(request_name)
+
+    # if send:
+    #     cmd_send.lookup_and_send(request_name)
 
 
 def pick_request(name=None):
@@ -128,4 +136,3 @@ def save_request(r, wrapper):
     json_helper.write_request(r, wrapper)
     print("REQUEST saved: ")
     print(wrapper.get('_display_ref'))
-

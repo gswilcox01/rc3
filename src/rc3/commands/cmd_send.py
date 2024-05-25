@@ -40,8 +40,12 @@ def cli(pick, edit, request_name):
         r = cmd_request.edit_request(request_name)
         send(r)
     else:
-        r = lookup_request(request_name)
-        send(r)
+        lookup_and_send(request_name)
+
+
+def lookup_and_send(request_name):
+    r = lookup_request(request_name)
+    send(r)
 
 
 def lookup_request(request_name):
