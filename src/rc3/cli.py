@@ -1,4 +1,6 @@
 import os
+import re
+
 import click
 
 from rc3.common import json_helper, config_helper, rc_globals
@@ -18,14 +20,36 @@ class ComplexCLI(click.Group):
         return rv
 
     def get_command(self, ctx, name):
-        # See more options like unique prefix matching here:
+        # See other options like unique prefix matching here:
         # https://click.palletsprojects.com/en/8.1.x/advanced/#command-aliases
+
+        # try to ignore typos
+        if re.match('^co', name, re.I):
+            name = 'collection'
+        elif re.match('^env', name, re.I):
+            name = 'environment'
+        elif re.match('^glo', name, re.I):
+            name = 'global'
+        elif re.match('^hel', name, re.I):
+            name = 'hello'
+        elif re.match('^imp', name, re.I):
+            name = 'import'
+        elif re.match('^li', name, re.I):
+            name = 'list'
+        elif re.match('^req', name, re.I):
+            name = 'request'
+        elif re.match('^sen', name, re.I):
+            name = 'send'
+        elif re.match('^set', name, re.I):
+            name = 'settings'
+
+        # shortcuts/aliases
         aliases = {
+            's': 'send',
             'r': 'request',
             'c': 'collection',
             'e': 'environment',
-            'g': 'global',
-            'globals': 'global'
+            'g': 'global'
         }
         name = aliases.get(name, name)
         try:
