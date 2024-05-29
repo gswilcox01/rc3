@@ -5,5 +5,45 @@
     "auth": {
         "type": "bearer",
         "bearer_token": "{{token}}"
-    }
+    },
+    "extract": [
+        {
+            "json_path": "$.status_code",
+            "from": "response",
+            "to": "response",
+            "var": "status"
+        },{
+            "json_path": "$.body.json",
+            "from": "response",
+            "to": "response",
+            "var": "body"
+        },{
+            "json_path": "$.headers.vary",
+            "from": "response",
+            "to": "response",
+            "var": "vary-header"
+        },{
+            "json_path": "$.headers.server",
+            "from": "response",
+            "to": "response",
+            "var": "server-header"
+        },{
+            "json_path": "$.text",
+            "from": "body",
+            "to": "response",
+            "var": "t"
+        },{
+            "json_path": "$.language",
+            "to": "response",
+            "var": "lang"
+        },{
+            "text_pattern": "text\\\":\\\"(.*?)\\\"",
+            "to": "response",
+            "var": "trex"
+        },{
+            "text_pattern": "language\\\":\\\"(.*?)\\\"",
+            "to": "response",
+            "var": "langrex"
+        }
+    ]
 }

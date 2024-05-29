@@ -9,9 +9,9 @@
         "scope": "greetings.read"
     },
     "save_responses": false,
-    "extract": {
+    "extract": [{
         "json_path": "$.access_token",
-        "env": "global",
+        "to": "global",
         "var": "token"
-    }
+    }]
 }

@@ -51,30 +51,12 @@
             "type": "boolean"
         },
         "extract": {
-            "description": "JSON node, or Text pattern (with regex group) to extract from response",
-            "type" : "object",
-            "properties": {
-                "json_path" : {
-                    "description": "A JSON Path expression to extract a single field from JSON",
-                    "type": "string"
-                },
-                "text_pattern" : {
-                    "description": "A Python regex pattern with a single REGEX GROUP to be exracted from the response",
-                    "type": "string"
-                },
-                "env" : {
-                    "description": "Choose to store the extracted field in either the global env (default), or currently selected env from your collection",
-                    "type": "string",
-                    "enum": ["global", "current"]
-                },
-                "var" : {
-                    "description": "The var name (default is token) in the environment to store the extracted value in",
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false
+            "description": "A list of values to extract from the response",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/extract"
+            }
         }
-
     },
     "additionalProperties": false,
     "$defs": {
@@ -84,7 +66,35 @@
                 "name": {"type": "string"}
             },
             "additionalProperties": {"type": "string"}
+        },
+        "extract": {
+            "description": "JSON node, or Text pattern (with regex group) to extract from response",
+            "type" : "object",
+            "properties": {
+                "json_path" : {
+                    "description": "A JSON Path expression to extract a single field from JSON",
+                    "type": "string"
+                },
+                "text_pattern" : {
+                    "description": "A Python regex pattern with a single REGEX GROUP to be extracted from the response",
+                    "type": "string"
+                },
+                "from" : {
+                    "description": "Where to extract from, default is response.body, optionaly verbose response",
+                    "type": "string",
+                    "enum": ["body", "response"]
+                },
+                "to" : {
+                    "description": "Where to store the extracted value",
+                    "type": "string",
+                    "enum": ["current", "global", "stdout", "response"]
+                },
+                "var" : {
+                    "description": "Var name used to store the extracted value",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
         }
-
     }
 }

@@ -122,11 +122,8 @@ def process_output(wrapper, response):
     request = wrapper.get('_original')
 
     # process potential extract, and update env file
-    extract_errors = process_extract(request, response)
-
-    # determine verbose output for console or file
-    verbose_output = create_verbose_output(response)
-    verbose_output['extract_errors'] = extract_errors
+    extract_buffer = process_extracts(request, response)
+    verbose_output = extract_buffer['verbose_output']   # will also have extract_errors & extracted now
 
     # write out *.response file
     save_responses = request.get('save_responses', settings.get('save_responses', True))
@@ -135,74 +132,117 @@ def process_output(wrapper, response):
                                          wrapper.get('_filename').split('.')[0] + ".response")
         json_helper.write_json(response_filename, verbose_output)
 
-    # display either verbose_output OR just the response body
-    if cli_options.get('verbose', False):
+    # if extracted to STDOUT that overrides everything
+    # otherwise print verbose or just response.body
+    if len(extract_buffer['stdout']) > 0:
+        print_helper.print_json(extract_buffer['stdout'])
+    elif cli_options.get('verbose', False):
         print_helper.print_json(verbose_output)
     else:
         print_helper.print_json_or_text(response)
 
 
-def process_extract(request, response):
-    # collect extract errors, and return them for display or storage on .response
-    errors = []
+def process_extracts(request, response):
+    # env extracts will go straight to the env, but other "to"s and errors collected here
+    verbose_output = create_verbose_output(response)
+    verbose_output['extract_errors'] = []
+    verbose_output['extracted'] = {}
+    extract_buffer = {
+        "stdout": {},
+        "verbose_output": verbose_output,
+        "response": verbose_output['extracted'],    # pointer here for easier ref
+        "errors": verbose_output['extract_errors']  # pointer here for easier ref
+    }
 
-    # do nothing if not "extract" in the def
-    extract = request.get("extract", None)
-    if extract is None:
-        return errors
+    # do nothing if no "extract" in the request
+    extract_list = request.get("extract", None)
+    if extract_list is None or len(extract_list) == 0:
+        return extract_buffer
 
-    # sys.exit with error, if env doesn't exist in the collection (or global doesn't exist)
-    env_name = extract.get("env", "global")
-    env_filename, env = json_helper.read_environment(env_name)
+    for extract in extract_list:
+        process_one_extract(extract, response, extract_buffer)
+    return extract_buffer
 
-    # default to "token" if var is not set
+
+def process_one_extract(extract, response, extract_buffer):
+    to_environment = False
+    to = extract.get("to", "global")
+    if to in ["global", "current"]:
+        to_environment = True
+        env_filename, env = json_helper.read_environment(to)
+
+    value = None
+    if "json_path" in extract:
+        value = extract_json_path(extract, response, extract_buffer)
+    elif "text_pattern" in extract:
+        value = extract_regex(extract, response, extract_buffer)
+
+    # write to environment if that is the output
+    # otherwise write to the buffer where we are collecting 1..n extracts
     var = extract.get("var", "token")
+    # print(f'var={var} value={value} to={to}')
+    if to_environment:
+        env[var] = value
+        json_helper.write_environment(env_filename, env)
+    elif to == "stdout":
+        extract_buffer.get("stdout")[var] = value
+    elif to == "response":
+        extract_buffer.get("response")[var] = value
+    else:
+        raise click.ClickException(f"Unrecognized $.extract.to ({to}), please check your .request")
 
+
+def extract_json_path(extract, response, extract_buffer):
     # attempt to find json path
     # See: https://www.digitalocean.com/community/tutorials/python-jsonpath-examples
     # See: https://jsonpath.com/
     # See: https://pypi.org/project/jsonpath-ng/
     json_path = extract.get("json_path", None)
-    if json_path is not None:
-        _json = extract_json(response)
-        if _json is None:
-            errors.append("REQUEST has $.extract.json_path, but response is not JSON!")
-            return errors
-        jsonpath_expression = parse(json_path)
-        match = jsonpath_expression.find(_json)
-        if len(match) < 1:
-            errors.append("REQUEST json_path=[{}] had no matches in response JSON!".format(json_path))
-            return errors
-        # use the value from the first match
-        value = match[0].value
-        env[var] = value
-        json_helper.write_environment(env_filename, env)
-        return errors
+    errors = extract_buffer['errors']
 
+    # body=response.body, response=verbose_output
+    extract_from = extract.get("from", "body")
+    target = extract_body_as_json(response) if extract_from == "body" else extract_buffer['verbose_output']
+    if target is None:
+        errors.append("REQUEST has $.extract.json_path, but response is not JSON!")
+        return
+
+    jsonpath_expression = parse(json_path)
+    match = jsonpath_expression.find(target)
+    if len(match) < 1:
+        errors.append("REQUEST json_path=[{}] had no matches in response JSON!".format(json_path))
+        return
+    # use the value from the first match
+    return match[0].value
+
+
+def extract_regex(extract, response, extract_buffer):
     # See python regex docs here for valid regex patterns:
     # https://docs.python.org/3/howto/regex.html
     text_pattern = extract.get("text_pattern", None)
-    if text_pattern is not None:
-        text = response.text
-        if len(text) < 1:
-            errors.append("REQUEST has $.extract.text_pattern, but response.text is 0 length!")
-            return errors
-        if "(" not in text_pattern or ")" not in text_pattern:
-            errors.append("REQUEST $.extract.text_pattern, MUST contain a matching group ()!")
-            return errors
-        # do it
-        pattern = re.compile(text_pattern)
-        match = pattern.search(text)
-        # group(0) is the WHOLE match, (1) is the first group in the pattern (what we want)
-        if match is None:
-            errors.append("REQUEST text_pattern=[{}] had no matches in response JSON!".format(text_pattern))
-            return errors
-        env[var] = match.group(1)
-        json_helper.write_environment(env_filename, env)
-        return errors
+    errors = extract_buffer['errors']
+
+    # body=response.body, response=verbose_output
+    extract_from = extract.get("from", "body")
+    target = response.text if extract_from == "body" else print_helper.get_json_string(extract_buffer['verbose_output'])
+    if len(target) < 1 and extract_from == "body":
+        errors.append("REQUEST has $.extract.text_pattern, but response.text is 0 length!")
+        return
+    if "(" not in text_pattern or ")" not in text_pattern:
+        errors.append("REQUEST $.extract.text_pattern, MUST contain a matching group ()!")
+        return
+
+    # do it
+    pattern = re.compile(text_pattern)
+    match = pattern.search(target)
+    # group(0) is the WHOLE match, (1) is the first group in the pattern (what we want)
+    if match is None:
+        errors.append("REQUEST text_pattern=[{}] had no matches in response JSON!".format(text_pattern))
+        return
+    return match.group(1)
 
 
-def extract_json(response):
+def extract_body_as_json(response):
     try:
         _json = response.json()
         return _json
@@ -212,21 +252,22 @@ def extract_json(response):
 
 def create_verbose_output(response):
     body = {}
-    if extract_json(response) is None:
+    if extract_body_as_json(response) is None:
         body['text'] = response.text
     else:
-        body['json'] = extract_json(response)
+        body['json'] = extract_body_as_json(response)
 
     headers = {}
     header_size = 0
     for key, value in response.headers.items():
         header_size += len(key) + len(value)
-        headers[key] = value
+        headers[key.lower()] = value
 
     # verbose output
     return {
         "status_code": response.status_code,
-        "time": str(response.elapsed.microseconds / 1000) + "ms",
+        "time": str(divmod(response.elapsed.microseconds, 1000)[0]) + "ms",
+        # "time2": str(response.elapsed.microseconds / 1000) + "ms",
         "size": {
             "body": len(response.content),
             "headers": header_size,
