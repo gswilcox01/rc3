@@ -27,7 +27,7 @@ def edit_environment():
     env_filename, env = json_helper.read_environment('global')
     new = internal_edit(env)
     if new is not None:
-        json_helper.write_environment(env_filename, env)
+        json_helper.write_environment(env_filename, new)
 
 
 def internal_edit(env):
