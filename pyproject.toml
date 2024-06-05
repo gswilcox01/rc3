@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rc3"
-version = "0.0.7"
+version = "0.0.8.beta1"
 authors = [
   { name="Gary Wilcox" },
   { email="gary@dugan-wilcox.com" }
@@ -24,7 +24,8 @@ dependencies = [
     "requests>=2.31",
     "jsonschema",
     "jsonpath-ng",
-    "funcy"
+    "funcy",
+    "pkce"
 ]
 
 [project.optional-dependencies]

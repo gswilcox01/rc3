@@ -28,6 +28,7 @@ def rc_memoized(call):
     if not isinstance(args, collections.Hashable):
         return call()
 
+    # print(f'cached func_name=[{func_name}]')
     my_cache = super_cache.get(func_name)
     if my_cache is None:
         my_cache = super_cache[func_name] = {}
@@ -38,3 +39,6 @@ def rc_memoized(call):
         my_cache[args] = call()
         return my_cache[args]
 
+
+def rc_clear_cache(func_name):
+    super_cache[func_name] = {}

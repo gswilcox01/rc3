@@ -3,7 +3,7 @@ import os
 import re
 import click
 
-from rc3.common import json_helper, print_helper
+from rc3.common import json_helper, print_helper, helper_functions
 
 PATTERN = re.compile(r'{{(.*?)}}')
 
@@ -42,6 +42,10 @@ def sub_vars(wrapper):
 
 
 def lookup_var_value(envs, var, seen=None):
+    # if var starts with #, then treat is as a helper function and NOT env var
+    if var.startswith("#"):
+        return helper_functions.lookup_helper_value(var)
+
     # seen just holds vars that have already seen for THIS lookup
     # if already seen, then we have an infinite loop...
     if seen is None:
