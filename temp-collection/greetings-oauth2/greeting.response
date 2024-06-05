@@ -1,0 +1,45 @@
+{
+    "status_code": 200,
+    "time": "140ms",
+    "size": {
+        "body": 44,
+        "headers": 376,
+        "total": 420
+    },
+    "headers": {
+        "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+        "x-content-type-options": "nosniff",
+        "x-xss-protection": "0",
+        "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+        "pragma": "no-cache",
+        "expires": "0",
+        "x-frame-options": "DENY",
+        "content-type": "application/json",
+        "date": "Wed, 29 May 2024 13:55:16 GMT",
+        "server": "Google Frontend",
+        "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "transfer-encoding": "chunked"
+    },
+    "body": {
+        "json": {
+            "id": 1,
+            "text": "Hello",
+            "language": "English"
+        }
+    },
+    "extract_errors": [],
+    "extracted": {
+        "status": 200,
+        "body": {
+            "id": 1,
+            "text": "Hello",
+            "language": "English"
+        },
+        "vary-header": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+        "server-header": "Google Frontend",
+        "t": "Hello",
+        "lang": "English",
+        "trex": "Hello",
+        "langrex": "English"
+    }
+}
