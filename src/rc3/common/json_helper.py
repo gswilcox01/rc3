@@ -82,7 +82,7 @@ def load_and_validate(filename, schema=None, _dir=None):
 
     _dict = read_json(file)
     schema_dict = read_json(data_helper.get_schema_file(schema))
-    print(schema_dict)
+    # print(schema_dict)
 
     # This PDF seemed better than the web docs for jsonschema:
     # https://readthedocs.org/projects/python-jsonschema/downloads/pdf/latest/
