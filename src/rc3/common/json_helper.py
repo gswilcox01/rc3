@@ -7,7 +7,7 @@ import click
 from funcy import print_durations
 from jsonschema import Draft7Validator
 from referencing import Registry, Resource
-from rc3.common import config_helper, data_helper
+from rc3.common import config_helper, data_helper, print_helper
 from rc3.common.data_helper import SCHEMA_PREFIX, SCHEMA_VERSION, COLLECTION_FILENAME, SETTINGS_FILENAME, \
     FOLDER_FILENAME, GLOBAL_ENV_FILENAME
 from rc3.common.decorators import rc_print_durations, rc_memoized
