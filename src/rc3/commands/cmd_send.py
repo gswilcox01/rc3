@@ -1,5 +1,7 @@
+import json
 import os
 import re
+from json import JSONDecodeError
 
 import click
 import requests
@@ -14,8 +16,9 @@ from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc
 @click.command("send", short_help="Sends an HTTP request & writes results to a response file.")
 @click.option('-p', '--pick', is_flag=True, default=False, help="Pick a REQUEST then send it.")
 @click.option('-e', '--edit', is_flag=True, default=False, help="Edit a REQUEST then send it.")
+@click.option('-f', '--file', type=click.Path(exists=True, readable=True, allow_dash=True, dir_okay=False), help="File to send as REQUEST body.")
 @click.argument('request_name', type=str, required=False)
-def cli(pick, edit, request_name):
+def cli(pick, edit, file, request_name):
     """\b
     Will send an HTTP request using the Python requests library.
     \b
@@ -32,20 +35,21 @@ def cli(pick, edit, request_name):
     if pick and edit:
         r = cmd_request.pick_request(request_name)
         r = cmd_request.edit_request(None, wrapper=r)
-        send(r)
+        send(r, file)
     elif pick:
         r = cmd_request.pick_request(request_name)
-        send(r)
+        send(r, file)
     elif edit:
         r = cmd_request.edit_request(request_name)
-        send(r)
+        send(r, file)
     else:
-        lookup_and_send(request_name)
+        r = lookup_request(request_name)
+        send(r, file)
 
 
 def lookup_and_send(request_name):
     r = lookup_request(request_name)
-    send(r)
+    send(r, None)
 
 
 def lookup_request(request_name):
@@ -57,7 +61,7 @@ def lookup_request(request_name):
     return r
 
 
-def send(wrapper):
+def send(wrapper, file):
     settings = json_helper.read_settings()
     request = wrapper.get('_original')
     headers = request.get('headers', {})
@@ -66,25 +70,10 @@ def send(wrapper):
     request['auth'] = inherit_helper.find_auth(wrapper)
     env_helper.process_subs(wrapper)
 
-    body_count = 0
-    _json = request.get('body', {}).get('json', None)
-    if _json is not None:
-        body_count += 1
-    text = request.get('body', {}).get('text', None)
-    if text is not None:
-        body_count += 1
-    form_data = request.get('form_data', None)
-    if form_data is not None:
-        body_count += 1
-    if body_count > 1:
-        raise click.ClickException("REQUEST can only have 1 of body.json, body.text, or form_data.  You have {}.".format(body_count))
-
-    _data = None
-    if text is not None:
-        _data = text
-        headers['Content-Type'] = "text/plain"
-    elif form_data is not None:
-        _data = form_data
+    # determine BODY to POST/PUT
+    # potentially updates default headers
+    # potentially overrides .request settings with --file passed in
+    _json, _data = determine_body(request, file, headers)
 
     timeout = settings.get('request_timeout', 30)
     allow_redirects = settings.get('follow_redirects', False)
@@ -94,7 +83,8 @@ def send(wrapper):
         if not os.path.exists(verify):
             raise click.ClickException(f'settings.json ca_bundle file [{verify}] does not exist!')
     if settings.get('headers_send_nocache', True):
-        headers['Cache-Control'] = 'no-cache'
+        if 'Cache-Control' not in headers:
+            headers['Cache-Control'] = 'no-cache'
 
     try:
         response = requests.request(request.get('method'), request.get('url'),
@@ -114,6 +104,61 @@ def send(wrapper):
         raise click.Abort
 
     process_output(wrapper, response)
+
+
+def read_as_json(file):
+    # if not os.path.exists(file):
+    #     return None
+    try:
+        # with open(file, 'r') as f:
+        with click.open_file(file) as f:
+            return json.load(f)
+    except JSONDecodeError as e:
+        return None
+
+
+def read_as_text(file):
+    # with open(file, 'r') as f:
+    with click.open_file(file) as f:
+        return f.read()
+
+
+def determine_body(request, file, headers):
+    _json = None
+    _data = None
+
+    # --file option overrides all other definitions in .request file
+    if file is not None:
+        _json = read_as_json(file)
+        if _json is None:
+            _data = read_as_text(file)
+            if 'Content-Type' not in headers:
+                headers['Content-Type'] = "text/plain"
+        return _json, _data
+
+    # no --file option, error if multiple bodies defined
+    body_count = 0
+    _json = request.get('body', {}).get('json', None)
+    if _json is not None:
+        body_count += 1
+    text = request.get('body', {}).get('text', None)
+    if text is not None:
+        body_count += 1
+    form_data = request.get('form_data', None)
+    if form_data is not None:
+        body_count += 1
+    if body_count > 1:
+        raise click.ClickException("REQUEST can only have 1 of body.json, body.text, or form_data.  You have {}.".format(body_count))
+
+    _data = None
+    if text is not None:
+        _data = text
+        # don't overwrite header if explicitly defined in the .request
+        if 'Content-Type' not in headers:
+            headers['Content-Type'] = "text/plain"
+    elif form_data is not None:
+        _data = form_data
+    return _json, _data
 
 
 def process_output(wrapper, response):

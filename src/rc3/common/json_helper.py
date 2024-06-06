@@ -82,6 +82,7 @@ def load_and_validate(filename, schema=None, _dir=None):
 
     _dict = read_json(file)
     schema_dict = read_json(data_helper.get_schema_file(schema))
+    print(schema_dict)
 
     # This PDF seemed better than the web docs for jsonschema:
     # https://readthedocs.org/projects/python-jsonschema/downloads/pdf/latest/
@@ -96,7 +97,9 @@ def load_and_validate(filename, schema=None, _dir=None):
     # print(filename + " is invalid:")
     for error in validator.iter_errors(_dict):
         # print(vars(error)) # use to look at what other attributes are available...
-        print(" * json path: /" + '.'.join(error.path))
+        # print(vars(error))
+        path = [s if isinstance(s, str) else f'[{s}]' for s in error.path]
+        print(" * json path: /" + '.'.join(path))
         print(" * error: " + error.message)
     print("If needed, please use VSCode to see validation errors w/ squiggles & hovers")
     sys.exit()

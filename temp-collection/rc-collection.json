@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/rc3-collection-0.0.3.json",
     "name": "example-collection",
-    "current_request": "/greetings-basic/greeting.request",
+    "current_request": "/greetings-basic/new-greeting.request",
     "current_environment": "dev",
     "auth": {
         "type": "none"

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.9.json",
     "method": "POST",
     "url": "{{baseUrl}}/oauth2/token",
     "form_data": {
@@ -9,9 +9,9 @@
         "scope": "greetings.write"
     },
     "save_responses": false,
-    "extract": {
+    "extract": [{
         "json_path": "$.access_token",
-        "env": "global",
+        "to": "global",
         "var": "token"
-    }
+    }]
 }

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.9.json",
     "comment": "no comment",
     "method": "GET",
     "url": "http://localhost:8080/v1/greetings",
@@ -26,10 +26,10 @@
             "any" : "json/object"
         }
     },
-    "extract": {
+    "extract": [{
         "json_path": "$.path.in.json[2]",
         "text_pattern": "regex with one (group.*) to extract",
-        "env": "global",
+        "to": "global",
         "var": "token"
-    }
+    }]
 }

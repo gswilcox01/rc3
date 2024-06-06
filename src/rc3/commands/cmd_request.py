@@ -32,12 +32,12 @@ def cli(_list, new, info, pick, edit, send, request_name):
         click.echo("NOT IMPLEMENTED! Please use VSCode to edit your collection.")
     elif edit:
         r = edit_request(request_name)
-        if send: cmd_send.send(r)
+        if send: cmd_send.send(r, None)
     elif info:
         print_info(request_name)
     elif pick:
         r = pick_request(request_name)
-        if send: cmd_send.send(r)
+        if send: cmd_send.send(r, None)
     elif send:
         cmd_send.lookup_and_send(request_name)
     elif request_name is None:

@@ -7,8 +7,8 @@
     },
     "body": {
         "json": {
-            "text": "Koar",
-            "language": "Martian"
+            "text": "{{ #prompt Please enter a value for text:Koar }}",
+            "language": "{{ #prompt Please enter a value for language:Martian }}"
         }
     }
 }

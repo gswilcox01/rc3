@@ -5,10 +5,10 @@
     "auth": {
         "type": "inherit"
     },
+    "headers": {
+        "Content-Type": "application/json"
+    },
     "body": {
-        "json": {
-            "text": "Koar",
-            "language": "Martian"
-        }
+        "text": "{\"text\": \"Koar\", \"language\":\"Martian\"}"
     }
 }

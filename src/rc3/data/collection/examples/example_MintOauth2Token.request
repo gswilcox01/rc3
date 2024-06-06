@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.9.json",
     "method": "POST",
     "url": "http://localhost:9000/oauth2/token",
     "form_data": {
@@ -7,9 +7,9 @@
         "client_id": "greetings-client",
         "client_secret": "secret1"
     },
-    "extract": {
+    "extract": [{
         "json_path": "$.access_token",
-        "env": "global",
+        "to": "global",
         "var": "token"
-    }
+    }]
 }

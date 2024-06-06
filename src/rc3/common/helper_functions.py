@@ -5,6 +5,7 @@ import uuid
 
 import click
 import pkce
+from click import prompt
 
 from rc3.common import json_helper, print_helper, decorators
 
@@ -16,6 +17,8 @@ def lookup_helper_value(var):
         return pkce_vac(var)
     if var.startswith("#uuid"):
         return uuid_helper(var)
+    if var.startswith("#prompt"):
+        return prompt_helper(var)
     raise click.ClickException(
         f'handlebar helper_function [{var}] is invalid!')
 
@@ -91,6 +94,22 @@ def uuid_helper(var):
     # return the uuid
     return value
 
+
+def prompt_helper(var):
+    parts = var.split()
+    if len(parts) < 2:
+        raise click.ClickException('A prompt is required when using the #prompt helper function!')
+
+    # look for a prompt + default
+    p = var[8:]
+    parts = p.split(":")
+    default = ""
+    if len(parts) > 1:
+        p = parts[0]
+        default = parts[1]
+
+    # prompt for value, and return
+    return click.prompt(p, default=default)
 
 
 

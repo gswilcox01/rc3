@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "method": "POST",
+    "url": "{{baseUrl}}/v1/greetings",
+    "auth": {
+        "type": "inherit"
+    },
+    "body": {
+        "json": {
+            "text": "{{ #prompt Please enter a value for text:Koar }}",
+            "language": "{{ #prompt Please enter a value for language:Martian }}"
+        }
+    }
+}

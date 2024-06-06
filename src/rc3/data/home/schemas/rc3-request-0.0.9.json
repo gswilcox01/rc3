@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "$id": "https://json.schemastore.org/rc3-request-0.0.9.json",
     "title": "rc3 request",
     "description": "RC request information",
     "type": "object",
