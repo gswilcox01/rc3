@@ -1,0 +1,36 @@
+{
+    "status_code": 200,
+    "time": "245.395ms",
+    "size": {
+        "body": 44,
+        "headers": 590,
+        "total": 634
+    },
+    "headers": {
+        "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+        "set-cookie": "search=bob*, page=2, page_size=100, uuid=80ce801e-4dd9-4998-a06b-14933706079e",
+        "xxx-movie": "bob",
+        "xxx-page": "71",
+        "xxx-uuid": "20505cf5-00a8-4af7-b8d7-ec8d3c21177e",
+        "xxx-pkce-challenge": "4DmzGESCKZOabasHGg2TdKTzde4EdT5YNejY3GmCQxI",
+        "x-content-type-options": "nosniff",
+        "x-xss-protection": "0",
+        "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+        "pragma": "no-cache",
+        "expires": "0",
+        "x-frame-options": "DENY",
+        "content-type": "application/json",
+        "Date": "Thu, 06 Jun 2024 16:45:44 GMT",
+        "Server": "Google Frontend",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Transfer-Encoding": "chunked"
+    },
+    "body": {
+        "json": {
+            "id": 1,
+            "text": "Hello",
+            "language": "English"
+        }
+    },
+    "extract_errors": []
+}

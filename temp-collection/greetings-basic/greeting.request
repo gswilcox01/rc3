@@ -8,11 +8,14 @@
     "headers": {
         "XXX-movie": "bob",
         "XXX-page": "71",
+        "XXX-uuid": "{{#uuid global.header-uuid }}",
+        "XXX-pkce-challenge": "{{#pkce_vac code_verifier }}",
         "page_size": "100"
     },
     "params": {
         "search": "bob*",
         "page": "2",
-        "page_size": "100"
+        "page_size": "100",
+        "uuid": "{{#uuid param-uuid }}"
     }
 }
