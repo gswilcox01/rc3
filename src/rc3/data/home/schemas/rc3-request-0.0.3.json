@@ -42,7 +42,12 @@
             "type" : "object",
             "properties": {
                 "text" : {"type": "string"},
-                "json" : {"type": "object"}
+                "json" : {
+                    "anyOf": [
+                        { "type": "object" },
+                        { "type": "array" }
+                    ]
+                }
             },
             "additionalProperties": false
         },

@@ -1,18 +1,18 @@
 {
     "status_code": 200,
-    "time": "245.395ms",
+    "time": "208ms",
     "size": {
         "body": 44,
-        "headers": 590,
-        "total": 634
+        "headers": 591,
+        "total": 635
     },
     "headers": {
         "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
-        "set-cookie": "search=bob*, page=2, page_size=100, uuid=80ce801e-4dd9-4998-a06b-14933706079e",
-        "xxx-movie": "bob",
+        "set-cookie": "search=bob*, page=2, page_size=100, uuid=898a7c66-b352-4c52-bcb1-1a7c8b7f1538",
+        "xxx-movie": "bobo",
         "xxx-page": "71",
-        "xxx-uuid": "20505cf5-00a8-4af7-b8d7-ec8d3c21177e",
-        "xxx-pkce-challenge": "4DmzGESCKZOabasHGg2TdKTzde4EdT5YNejY3GmCQxI",
+        "xxx-uuid": "4d01e2b9-0adc-4d79-bab0-980dc5b4c101",
+        "xxx-pkce-challenge": "kxYPFdumnV75J2sIPndR2324k1_tYLVTIBnWaJbzy9Y",
         "x-content-type-options": "nosniff",
         "x-xss-protection": "0",
         "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
@@ -20,10 +20,10 @@
         "expires": "0",
         "x-frame-options": "DENY",
         "content-type": "application/json",
-        "Date": "Thu, 06 Jun 2024 16:45:44 GMT",
-        "Server": "Google Frontend",
-        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
-        "Transfer-Encoding": "chunked"
+        "date": "Thu, 06 Jun 2024 17:21:05 GMT",
+        "server": "Google Frontend",
+        "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "transfer-encoding": "chunked"
     },
     "body": {
         "json": {
@@ -32,5 +32,6 @@
             "language": "English"
         }
     },
-    "extract_errors": []
+    "extract_errors": [],
+    "extracted": {}
 }
