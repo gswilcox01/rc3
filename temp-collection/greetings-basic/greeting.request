@@ -9,7 +9,7 @@
         "XXX-movie": "bobo",
         "XXX-page": "71",
         "XXX-uuid": "{{#uuid global.header-uuid }}",
-        "XXX-pkce-challenge": "{{#pkce_vac code_verifier }}",
+        "XXX-pkce-challenge": "{{#pkce_cvcc code_verifier }}",
         "page_size": "100"
     },
     "params": {
