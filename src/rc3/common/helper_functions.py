@@ -13,8 +13,8 @@ from rc3.common import json_helper, print_helper, decorators, file_helper
 def lookup_helper_value(var):
     # simple hard-coding for now
     # in the future maybe dynamically use any function in this file, or even add user-defined helper functions
-    if var.startswith("#pkce_vac"):
-        return pkce_vac(var)
+    if var.startswith("#pkce_cvcc"):
+        return pkce_cvcc(var)
     if var.startswith("#uuid"):
         return uuid_helper(var)
     if var.startswith("#prompt"):
@@ -25,8 +25,9 @@ def lookup_helper_value(var):
         f'handlebar helper_function [{var}] is invalid!')
 
 
-def parse_env_var(var, helper_name):
+def parse_env_var(var):
     parts = var.split()
+    helper_name = parts[0]
     var_name = None
     env_name = "global"
     if len(parts) > 1:
@@ -41,18 +42,18 @@ def parse_env_var(var, helper_name):
     return env_name, var_name
 
 
-def pkce_vac(var):
+def pkce_cvcc(var):
     # initial impl, uses default/mostly fixed values of
     # length = 128
     # global var to store = code_verifier
     # challenge transformation = S256
     parts = var.split()
-    env_name, var_name = parse_env_var(var, "#uuid")
+    env_name, var_name = parse_env_var(var)
     if var_name is None:
         var_name = 'code_verifier'
     if len(parts) > 2:
         raise click.ClickException(
-            f'Invalid # of parameters to #pkce_vc helper function.  Expected 0 or 1, but got {len(parts)}!')
+            f'Invalid # of parameters to {parts[0]} helper function.  Expected 0 or 1, but got {len(parts)}!')
 
     # generate cv and cc
     cv, cc = pkce.generate_pkce_pair()
@@ -76,7 +77,7 @@ def uuid_helper(var):
     # parameter with no . = stored in global
     # parameter with . = LEFT side must be global|current RIGHT side is var name
     parts = var.split()
-    env_name, var_name = parse_env_var(var, "#uuid")
+    env_name, var_name = parse_env_var(var)
     if len(parts) > 2:
         raise click.ClickException(
             f'Invalid # of parameters to #uuid helper function.  Expected 0 or 1, but got {len(parts)}!')
