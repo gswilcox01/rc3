@@ -7,8 +7,8 @@
     },
     "body": {
         "json": {
-            "text": "Koar",
-            "language": "Martian"
+            "text": "{{ language }}",
+            "language": "{{ text }}"
         }
     },
     "save_responses": false,

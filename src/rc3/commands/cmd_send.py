@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import re
@@ -10,21 +11,21 @@ from requests.auth import HTTPBasicAuth, AuthBase
 from requests.exceptions import SSLError
 
 from rc3.commands import cmd_request
-from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals, file_helper
+from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals, file_helper, decorators
 
 
 @click.command("send", short_help="Sends an HTTP request & writes results to a response file.")
 @click.option('-p', '--pick', is_flag=True, default=False, help="Pick a REQUEST then send it.")
 @click.option('-e', '--edit', is_flag=True, default=False, help="Edit a REQUEST then send it.")
 @click.option('-f', '--file', type=click.Path(exists=True, readable=True, allow_dash=True, dir_okay=False), help="File to send as REQUEST body.")
-@click.argument('request_name', type=str, required=False)
+@click.argument('request_name', type=str, required=False, nargs=-1)
 def cli(pick, edit, file, request_name):
     """\b
     Will send an HTTP request using the Python requests library.
     \b
-    REQUEST_NAME is optional.
-    REQUEST_NAME will default to the current_request.
-    REQUEST_NAME if used should be one of:
+    REQUEST_NAME(s) is optional.
+    REQUEST_NAME(s) will default to the current_request.
+    REQUEST_NAME(s) if used should be one of:
     1. The NUM column from 'rc request --list' output
     2. THe NAME column from 'rc request --list' output
 
@@ -32,18 +33,39 @@ def cli(pick, edit, file, request_name):
     OUTPUT will be the response body to STDOUT.
     OUTPUT will also be a *.response file in the same dir as the *.request file.
     """
+    if len(request_name) > 1:
+        if pick:
+            raise click.ClickException("--pick option is invalid if multiple REQUEST_NAMES")
+        if edit:
+            raise click.ClickException("--edit option is invalid if multiple REQUEST_NAMES")
+        if file is not None:
+            raise click.ClickException("--file option is invalid if multiple REQUEST_NAMES")
+        for name in request_name:
+            r = lookup_request(name)
+            # make a deepcopy, in case we are sending multiples of the same request, env var subs happen again!
+            # & bust the read_env cache, so 2nd request can see extracted values from 1st request
+            r = copy.deepcopy(r)
+            decorators.rc_clear_cache('read_environment')
+            send(r, None)
+        return
+
+    # otherwise 0 or 1 request_names
+    name = None
+    if len(request_name) == 1:
+        name = request_name[0]
+
     if pick and edit:
-        r = cmd_request.pick_request(request_name)
+        r = cmd_request.pick_request(name)
         r = cmd_request.edit_request(None, wrapper=r)
         send(r, file)
     elif pick:
-        r = cmd_request.pick_request(request_name)
+        r = cmd_request.pick_request(name)
         send(r, file)
     elif edit:
-        r = cmd_request.edit_request(request_name)
+        r = cmd_request.edit_request(name)
         send(r, file)
     else:
-        r = lookup_request(request_name)
+        r = lookup_request(name)
         send(r, file)
 
 

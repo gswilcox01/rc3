@@ -3,10 +3,19 @@ import os
 import re
 import click
 
-from rc3.common import json_helper, print_helper, helper_functions
+from rc3.common import json_helper, print_helper, helper_functions, decorators
 
 PATTERN = re.compile(r'{{(.*?)}}')
 JSON_FILE_PATTERN = re.compile(r'"{{(.*?#file.*?)}}"')
+
+
+def lookup_one_var(var):
+    envs = [
+        json_helper.read_environment('current')[1],
+        json_helper.read_environment('global')[1],
+        os.environ
+    ]
+    return lookup_var_value(envs, var)
 
 
 def process_subs(wrapper):
