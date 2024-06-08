@@ -10,7 +10,7 @@ from requests.auth import HTTPBasicAuth, AuthBase
 from requests.exceptions import SSLError
 
 from rc3.commands import cmd_request
-from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals
+from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals, file_helper
 
 
 @click.command("send", short_help="Sends an HTTP request & writes results to a response file.")
@@ -66,8 +66,10 @@ def send(wrapper, file):
     request = wrapper.get('_original')
     headers = request.get('headers', {})
 
-    # find_auth() before var substitution!
+    # find_auth() before var subs, so env var subs happen in inherited auth also!
+    # IMPORTANT! preprocess_file_option() before env var subs, so {{#file}} helper can consume --file if necc.
     request['auth'] = inherit_helper.find_auth(wrapper)
+    file_helper.preprocess_file_option(file)
     env_helper.process_subs(wrapper)
 
     # determine BODY to POST/PUT
@@ -106,37 +108,16 @@ def send(wrapper, file):
     process_output(wrapper, response)
 
 
-def read_as_json(file):
-    # if not os.path.exists(file):
-    #     return None
-    try:
-        # with open(file, 'r') as f:
-        with click.open_file(file) as f:
-            return json.load(f)
-    except JSONDecodeError as e:
-        return None
-
-
-def read_as_text(file):
-    # with open(file, 'r') as f:
-    with click.open_file(file) as f:
-        return f.read()
-
-
 def determine_body(request, file, headers):
-    _json = None
-    _data = None
-
     # --file option overrides all other definitions in .request file
-    if file is not None:
-        _json = read_as_json(file)
-        if _json is None:
-            _data = read_as_text(file)
-            if 'Content-Type' not in headers:
-                headers['Content-Type'] = "text/plain"
-        return _json, _data
+    # IMPORTANT!: file_helper.preprocess_file_option(file) MUST have already been called before handlebar substitution!
+    # IMP2: if the --file was consumed by a handlebar expression of "{{ #file }}" already, then it won't be used here!
+    if file_helper.state['has_file'] and not file_helper.state['consumed']:
+        return file_helper.state['_json'], file_helper.state['_text']
 
     # no --file option, error if multiple bodies defined
+    _json = None
+    _data = None
     body_count = 0
     _json = request.get('body', {}).get('json', None)
     if _json is not None:

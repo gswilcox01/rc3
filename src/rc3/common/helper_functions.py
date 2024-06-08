@@ -7,7 +7,7 @@ import click
 import pkce
 from click import prompt
 
-from rc3.common import json_helper, print_helper, decorators
+from rc3.common import json_helper, print_helper, decorators, file_helper
 
 
 def lookup_helper_value(var):
@@ -19,6 +19,8 @@ def lookup_helper_value(var):
         return uuid_helper(var)
     if var.startswith("#prompt"):
         return prompt_helper(var)
+    if var.startswith("#file"):
+        return file_helper_function(var)
     raise click.ClickException(
         f'handlebar helper_function [{var}] is invalid!')
 
@@ -110,6 +112,19 @@ def prompt_helper(var):
 
     # prompt for value, and return
     return click.prompt(p, default=default)
+
+
+def file_helper_function(var):
+    # IMPORTANT! preprocess_file_option() MUST have been called back in cmd_send BEFORE env subs/helpers are called!
+    parts = var.split()
+    if len(parts) > 1:
+        raise click.ClickException('The #file helper function doesn\'t support any parameters!')
+    if not file_helper.state['has_file']:
+        raise click.ClickException('The --file option must be used since this request has a #file helper function!')
+
+    # ALWAYS return as a string
+    # if subbing into the JSON body, the string will get converted back to JSON/dict after subs
+    return file_helper.consume_as_string()
 
 
 

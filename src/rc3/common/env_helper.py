@@ -6,6 +6,7 @@ import click
 from rc3.common import json_helper, print_helper, helper_functions
 
 PATTERN = re.compile(r'{{(.*?)}}')
+JSON_FILE_PATTERN = re.compile(r'"{{(.*?#file.*?)}}"')
 
 
 def process_subs(wrapper):
@@ -36,7 +37,9 @@ def sub_vars(wrapper):
     _json = r.get('body', {}).get('json')
     if _json is not None:
         json_string = json.dumps(_json)
-        new_string = sub_in_string(envs, json_string)
+        # special sub for {{ #file }} in JUST the body.json portion of the .request
+        new_string = sub_file_in_json_string(envs, json_string)
+        new_string = sub_in_string(envs, new_string)
         if new_string != json_string:
             r.get('body')['json'] = json.loads(new_string)
 
@@ -80,6 +83,19 @@ def sub_in_dict(envs, d):
             # this allows multiple vars to be used in a single value (each gets replaced)
             new_value = new_value.replace(match.group(0), var_value)
         d[key] = new_value
+
+
+def sub_file_in_json_string(envs, s):
+    if s is None:
+        return None
+    # JUST for {{ #file }} expressions in json.body, we want to replace surrounding double quotes also!
+    # I.E.: "{{ #file }}" and not just {{ #file }}
+    # NOTE: if #file is used in other parts of the request, it will do normal subbing, and not replace ""
+    for match in JSON_FILE_PATTERN.finditer(s):
+        var = match.group(1).strip()
+        var_value = lookup_var_value(envs, var)
+        s = s.replace(match.group(0), var_value)
+    return s
 
 
 def sub_in_string(envs, s):
