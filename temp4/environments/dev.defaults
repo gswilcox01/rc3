@@ -1,0 +1,9 @@
+{
+    "$schema": "https://json.schemastore.org/rc3-environment-0.0.3.json",
+    "baseUrl": "https://greetings-mvrsygo3gq-uc.a.run.app",
+    "property1": "value123",
+    "property2": "value2",
+    "password": "pass",
+    "admin_secret": "secret2",
+    "read_secret": "secret1"
+}
