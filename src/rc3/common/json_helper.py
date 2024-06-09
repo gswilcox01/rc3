@@ -55,12 +55,14 @@ def guess_dir(filename):
 @rc_memoized
 # @rc_memoized
 def create_registry():
+    # TODO: do i even need a registry any more, rc3-auth refs are no longer relative...
     # Registry is only needed for relative refs ($ref) in schemas (and we only have 1 to begin with)
     # All the full document schemas will be loaded individually when used
     registry = Registry()
-    loaded = read_json(data_helper.get_schema_file('auth'))
+    loaded = read_schema('auth')
     resource = Resource.from_contents(loaded)
-    registry = registry.with_resource(f"./{SCHEMA_PREFIX}-auth-{SCHEMA_VERSION}.json", resource)
+    filename = data_helper.get_schema_filename('auth')
+    registry = registry.with_resource(f"./{filename}", resource)
     return registry
 
 
@@ -139,6 +141,11 @@ def check_schema(_file):
     _dict = read_json(_file)
     validator = Draft7Validator(_dict, registry=create_registry())
     validator.check_schema(_dict)
+
+
+def read_schema(partial_name):
+    _file = data_helper.get_schema_file(partial_name)
+    return read_json(_file)
 
 
 def read_json(filename):

@@ -19,12 +19,19 @@ VERSION_MAP = {
     'settings': SCHEMA_VERSION
 }
 
+
 def get_file(filename):
     return files(DATA_PACKAGE).joinpath(filename)
 
 
 def get_schema_file(partial):
-    return get_file(f'home/schemas/{SCHEMA_PREFIX}-{partial}-{VERSION_MAP.get(partial,SCHEMA_VERSION)}.json')
+    filename = get_schema_filename(partial)
+    return get_file(f'schemas/{filename}')
+
+
+def get_schema_filename(partial):
+    version = VERSION_MAP.get(partial,SCHEMA_VERSION)
+    return f'{SCHEMA_PREFIX}-{partial}-{version}.json'
 
 
 def copy_tree(source_file, dest):

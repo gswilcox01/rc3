@@ -25,7 +25,8 @@ dependencies = [
     "jsonschema",
     "jsonpath-ng",
     "funcy",
-    "pkce"
+    "pkce",
+    "pyjwt"
 ]
 
 [project.optional-dependencies]

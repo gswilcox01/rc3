@@ -133,8 +133,9 @@ def create_environment(name):
     display_name = '' if name is None else name
     click.echo(f'Creating new ENVIRONMENT {display_name}')
 
+    schema = json_helper.read_schema('environment')
     env = {
-        "$schema": f'{SCHEMA_BASE_URL}/{SCHEMA_PREFIX}-environment-{SCHEMA_VERSION}.json',
+        "$schema": schema['$id'],
         "baseUrl": "http://localhost:8080",
         "property1": "value1"
     }
