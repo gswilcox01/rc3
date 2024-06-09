@@ -43,7 +43,8 @@ def init_rc_home():
         # print("Creating " + dest)
         data_helper.copy('home/' + GLOBAL_ENV_FILENAME, dest)
 
-    dest = os.path.join(home, 'schemas')
-    if not os.path.exists(dest):
-        # print("Creating " + dest)
-        data_helper.copy_tree('home/schemas', dest)
+    # no longer put schemas in homedir, just 1 more thing to be out of sync, and they are not used... just docs...
+    # dest = os.path.join(home, 'schemas')
+    # if not os.path.exists(dest):
+    #     # print("Creating " + dest)
+    #     data_helper.copy_tree('schemas', dest)
