@@ -35,6 +35,8 @@ def check_home_schemas():
     settings = json_helper.read_json(settings_dest)
     settings_schema = json_helper.read_schema('settings')
     if settings['$schema'] != settings_schema['$id']:
+        if len(buffer) == 0:
+            click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
         buffer.append(f'settings schema is({settings['$schema']}) but should be({settings_schema['$id']})')
 
     # check global
@@ -42,14 +44,14 @@ def check_home_schemas():
     global_env = json_helper.read_json(global_dest)
     env_schema = json_helper.read_schema('environment')
     if global_env['$schema'] != env_schema['$id']:
+        if len(buffer) == 0:
+            click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
         buffer.append(f'global_env schema is({global_env['$schema']}) but should be({env_schema['$id']})')
 
     if len(buffer) == 0:
-        # click.echo(" OK")
         click.echo(click.style(f' OK', fg='green'))
         return
 
-    click.echo("")
     for line in buffer:
         click.echo(line)
     if not click.confirm("Would you like to upgrade RC_HOME schemas", default=True):
@@ -97,10 +99,12 @@ def check_collection_schemas():
     if not click.confirm("Would you like to upgrade current COLLECTION schemas", default=True):
         return
 
+    click.echo("Upgrading current COLLECTION schemas...", nl=False)
     for full_file, expected_schema in update_files.items():
         full_json = json_helper.read_json_or_none(full_file)
         full_json['$schema'] = expected_schema
         json_helper.write_json(full_file, full_json)
+    click.echo(click.style(f' SUCCESS', fg='green'))
 
 
 def check_collection_examples():
