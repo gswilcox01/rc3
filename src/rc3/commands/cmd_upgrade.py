@@ -69,7 +69,6 @@ def check_collection_schemas():
     click.echo("Checking current COLLECTION schemas...", nl=False)
 
     # check for current collection
-    click.echo("")
     c, wrapper = json_helper.read_current_collection()
     c_folder = wrapper['_dir']
     update_files = {}
@@ -86,7 +85,9 @@ def check_collection_schemas():
                     schema = json_helper.read_schema(partial)
                     expected_schema = schema['$id']
                     if expected_schema != actual_schema:
-                        print(f'{file} schema is({actual_schema}) but should be({expected_schema})')
+                        if len(update_files) == 0:
+                            click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
+                        click.echo(f'{file} schema is({actual_schema}) but should be({expected_schema})')
                         update_files[full_file] = expected_schema
 
     if len(update_files) == 0:
