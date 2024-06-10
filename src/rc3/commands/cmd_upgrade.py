@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import time
 
 import click
@@ -18,9 +19,10 @@ def cli():
     """
     print("Checking for possible upgrades...")
     check_home_schemas()
-    check_collection_schemas()
     check_collection_examples()
+    check_collection_schemas()
     check_collection_extract()
+    check_collection_json()
 
 
 def check_home_schemas():
@@ -65,7 +67,39 @@ def check_home_schemas():
 
 def check_collection_schemas():
     click.echo("Checking current COLLECTION schemas...", nl=False)
-    click.echo(click.style(f' OK', fg='green'))
+
+    # check for current collection
+    click.echo("")
+    c, wrapper = json_helper.read_current_collection()
+    c_folder = wrapper['_dir']
+    update_files = {}
+    schema_re = re.compile(r'rc3-([a-z]*)-\d.\d.\d.json')
+    for dirpath, dirnames, files in os.walk(c_folder):
+        for file in files:
+            full_file = os.path.join(dirpath, file)
+            full_json = json_helper.read_json_or_none(full_file)
+            actual_schema = None if full_json is None else full_json.get('$schema', None)
+            if actual_schema is not None:
+                match = schema_re.search(actual_schema)
+                if match is not None:
+                    partial = match.group(1)
+                    schema = json_helper.read_schema(partial)
+                    expected_schema = schema['$id']
+                    if expected_schema != actual_schema:
+                        print(f'{file} schema is({actual_schema}) but should be({expected_schema})')
+                        update_files[full_file] = expected_schema
+
+    if len(update_files) == 0:
+        click.echo(click.style(f' OK', fg='green'))
+        return
+
+    if not click.confirm("Would you like to upgrade current COLLECTION schemas", default=True):
+        return
+
+    for full_file, expected_schema in update_files.items():
+        full_json = json_helper.read_json_or_none(full_file)
+        full_json['$schema'] = expected_schema
+        json_helper.write_json(full_file, full_json)
 
 
 def check_collection_examples():
@@ -77,4 +111,8 @@ def check_collection_extract():
     click.echo("Checking current COLLECTION REQUEST extract JSON...", nl=False)
     click.echo(click.style(f' OK', fg='green'))
 
+
+def check_collection_json():
+    click.echo("Checking current COLLECTION validating JSON against current schemas...", nl=False)
+    click.echo(click.style(f' OK', fg='green'))
 

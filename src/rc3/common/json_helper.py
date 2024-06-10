@@ -143,6 +143,7 @@ def check_schema(_file):
     validator.check_schema(_dict)
 
 
+@rc_memoized
 def read_schema(partial_name):
     _file = data_helper.get_schema_file(partial_name)
     return read_json(_file)
@@ -158,6 +159,16 @@ def read_json(filename):
         print()
         print(type(e).__name__ + " " + str(e))
         raise click.ClickException("unable to load file as JSON: " + filename)
+
+
+def read_json_or_none(filename):
+    if not os.path.exists(filename):
+        return None
+    try:
+        with open(filename, 'r') as f:
+            return json.load(f)
+    except JSONDecodeError as e:
+        return None
 
 
 def parse_json(json_string):
