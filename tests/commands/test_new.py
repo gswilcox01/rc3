@@ -20,7 +20,7 @@ def test_new_from_empty(clean_home, clean_empty, runner):
 
     # test it exists now AND is empty
     assert os.path.exists(rc_home)
-    assert os.listdir(rc_home) == [GLOBAL_ENV_FILENAME, SETTINGS_FILENAME, 'schemas']
+    assert os.listdir(rc_home) == [GLOBAL_ENV_FILENAME, SETTINGS_FILENAME]
     assert os.listdir(clean_empty) == ['environments',
                                        'examples',
                                        'greetings-basic',
@@ -44,7 +44,7 @@ def test_new_from_NOT_empty(clean_home, clean_empty, runner):
 
     # test that we DO STILL init RC_HOME
     assert os.path.exists(rc_home)
-    assert os.listdir(rc_home) == [GLOBAL_ENV_FILENAME, SETTINGS_FILENAME, 'schemas']
+    assert os.listdir(rc_home) == [GLOBAL_ENV_FILENAME, SETTINGS_FILENAME]
     # BUT we DON'T init the CWD, or import a collection
     assert os.listdir(clean_empty) == ['temp.json']
     settings = json_helper.read_settings()
