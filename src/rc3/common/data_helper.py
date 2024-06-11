@@ -1,3 +1,4 @@
+import os
 import shutil
 from importlib import resources
 from importlib.resources import files
@@ -32,6 +33,15 @@ def get_schema_file(partial):
 def get_schema_filename(partial):
     version = VERSION_MAP.get(partial,SCHEMA_VERSION)
     return f'{SCHEMA_PREFIX}-{partial}-{version}.json'
+
+
+def walk_tree(source_file):
+    source = get_file(source_file)
+    with resources.as_file(source) as path:
+        for dirpath, dirnames, files in os.walk(path):
+            for file in files:
+                full_file = os.path.join(dirpath, file)
+                print(full_file)
 
 
 def copy_tree(source_file, dest):

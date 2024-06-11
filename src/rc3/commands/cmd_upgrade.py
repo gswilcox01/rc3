@@ -6,7 +6,7 @@ import time
 import click
 
 from rc3.commands import cmd_list
-from rc3.common import json_helper, print_helper, config_helper
+from rc3.common import json_helper, print_helper, config_helper, data_helper
 from rc3.common.data_helper import SCHEMA_BASE_URL, SCHEMA_PREFIX, SCHEMA_VERSION, SETTINGS_FILENAME, \
     GLOBAL_ENV_FILENAME
 
@@ -74,6 +74,9 @@ def check_collection_schemas():
     c, wrapper = json_helper.read_current_collection()
     c_folder = wrapper['_dir']
     update_files = {}
+
+    # RE out the partial name "request" from the following string
+    # rc3-request-0.0.3.json
     schema_re = re.compile(r'rc3-([a-z]*)-\d.\d.\d.json')
     for dirpath, dirnames, files in os.walk(c_folder):
         for file in files:
@@ -109,6 +112,10 @@ def check_collection_schemas():
 
 def check_collection_examples():
     click.echo("Checking current COLLECTION examples...", nl=False)
+
+    data_helper.walk_tree('collection/examples')
+    # TODO: base64 diff data/examples and current/collection/examples
+    # TODO: extra deleted, missing/diff clobbered with new
     click.echo(click.style(f' OK', fg='green'))
 
 
