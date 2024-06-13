@@ -16,7 +16,7 @@ VERSION_MAP = {
     'collection': SCHEMA_VERSION,
     'environment': SCHEMA_VERSION,
     'folder': SCHEMA_VERSION,
-    'request': '0.0.9',
+    'request': '0.0.8',
     'settings': SCHEMA_VERSION
 }
 
