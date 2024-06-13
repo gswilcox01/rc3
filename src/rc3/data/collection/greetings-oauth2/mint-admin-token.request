@@ -1,5 +1,5 @@
 {
-    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8b4/src/rc3/data/home/schemas/rc3-request-0.0.9.json",
+    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8/src/rc3/data/schemas/rc3-request-0.0.8.json",
     "method": "POST",
     "url": "{{baseUrl}}/oauth2/token",
     "form_data": {
