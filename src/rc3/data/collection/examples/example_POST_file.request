@@ -1,0 +1,9 @@
+{
+    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8/src/rc3/data/schemas/rc3-request-0.0.8.json",
+    "method": "POST",
+    "url": "http://localhost:8080/v1/greetings",
+    "comment": "If the #file helper function is used anywhere in your template, the '--file' option will be required to send it.",
+    "body": {
+        "json": "{{ #file }}"
+    }
+}
