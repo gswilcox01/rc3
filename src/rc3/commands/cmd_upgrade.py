@@ -147,7 +147,9 @@ def check_collection_examples():
     click.echo(f'Example folder has {changed_count} out-of-date examples, {missing_count} missing examples...')
     if not click.confirm("Would you like to create/update current COLLECTION examples", default=True):
         return
+    click.echo("Updating current COLLECTION examples...", nl=False)
     data_helper.copy_tree('collection/examples', examples_folder)
+    click.echo(click.style(f' SUCCESS', fg='green'))
 
 
 def sha256(filename):
