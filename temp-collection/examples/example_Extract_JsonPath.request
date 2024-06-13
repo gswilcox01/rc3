@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8b4/src/rc3/data/home/schemas/rc3-request-0.0.9.json",
     "method": "POST",
     "url": "http://localhost:9000/oauth2/token",
     "form_data": {
@@ -8,9 +8,9 @@
         "client_secret": "secret2",
         "scope": "greetings.write"
     },
-    "extract": {
+    "extract": [{
         "json_path": "$.access_token",
-        "env": "global",
+        "to": "global",
         "var": "token"
-    }
+    }]
 }

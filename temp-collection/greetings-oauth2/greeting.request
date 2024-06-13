@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-request-0.0.3.json",
+    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8b4/src/rc3/data/home/schemas/rc3-request-0.0.9.json",
     "method": "GET",
     "url": "{{baseUrl}}/v3/greetings/1",
     "auth": {
@@ -12,35 +12,42 @@
             "from": "response",
             "to": "response",
             "var": "status"
-        },{
+        },
+        {
             "json_path": "$.body.json",
             "from": "response",
             "to": "response",
             "var": "body"
-        },{
+        },
+        {
             "json_path": "$.headers.vary",
             "from": "response",
             "to": "response",
             "var": "vary-header"
-        },{
+        },
+        {
             "json_path": "$.headers.server",
             "from": "response",
             "to": "response",
             "var": "server-header"
-        },{
+        },
+        {
             "json_path": "$.text",
             "from": "body",
             "to": "response",
             "var": "t"
-        },{
+        },
+        {
             "json_path": "$.language",
             "to": "response",
             "var": "lang"
-        },{
+        },
+        {
             "text_pattern": "text\\\":\\\"(.*?)\\\"",
             "to": "response",
             "var": "trex"
-        },{
+        },
+        {
             "text_pattern": "language\\\":\\\"(.*?)\\\"",
             "to": "response",
             "var": "langrex"
