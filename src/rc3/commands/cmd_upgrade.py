@@ -1,7 +1,9 @@
+import hashlib
 import json
 import os
 import re
 import time
+from importlib import resources
 
 import click
 
@@ -92,7 +94,9 @@ def check_collection_schemas():
                     if expected_schema != actual_schema:
                         if len(update_files) == 0:
                             click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
-                        click.echo(f'{file} schema is({actual_schema}) but should be({expected_schema})')
+                        click.echo(f'{file}')
+                        click.echo(f'      schema is: {actual_schema}')
+                        click.echo(f'  but should be: {expected_schema}')
                         update_files[full_file] = expected_schema
 
     if len(update_files) == 0:
@@ -113,18 +117,50 @@ def check_collection_schemas():
 def check_collection_examples():
     click.echo("Checking current COLLECTION examples...", nl=False)
 
-    data_helper.walk_tree('collection/examples')
-    # TODO: base64 diff data/examples and current/collection/examples
-    # TODO: extra deleted, missing/diff clobbered with new
-    click.echo(click.style(f' OK', fg='green'))
+    # determine current collection examples folder
+    c, wrapper = json_helper.read_current_collection()
+    c_folder = wrapper['_dir']
+    examples_folder = os.path.join(c_folder, 'examples')
+
+    # data_helper.walk_tree('collection/examples')
+    missing_count = 0
+    changed_count = 0
+    reference_examples_folder = data_helper.get_file('collection/examples')
+    with resources.as_file(reference_examples_folder) as path:
+        for dirpath, dirnames, files in os.walk(path):
+            for file in files:
+                ref_file = os.path.join(dirpath, file)
+                ref_hash = sha256(ref_file)
+                col_file = os.path.join(examples_folder, file)
+                if os.path.exists(col_file):
+                    col_hash = sha256(col_file)
+                    if ref_hash != col_hash:
+                        changed_count += 1
+                else:
+                    missing_count += 1
+
+    if missing_count + changed_count == 0:
+        click.echo(click.style(f' OK', fg='green'))
+        return
+    click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
+
+    click.echo(f'Example folder has {changed_count} out-of-date examples, {missing_count} missing examples...')
+    if not click.confirm("Would you like to create/update current COLLECTION examples", default=True):
+        return
+    data_helper.copy_tree('collection/examples', examples_folder)
+
+
+def sha256(filename):
+    with open(filename, 'rb', buffering=0) as f:
+        return hashlib.file_digest(f, 'sha256').hexdigest()
 
 
 def check_collection_extract():
     click.echo("Checking current COLLECTION REQUEST extract JSON...", nl=False)
-    click.echo(click.style(f' OK', fg='green'))
+    click.echo(click.style(f' NOT IMPLEMENTED YET', fg='yellow'))
 
 
 def check_collection_json():
     click.echo("Checking current COLLECTION validating JSON against current schemas...", nl=False)
-    click.echo(click.style(f' OK', fg='green'))
+    click.echo(click.style(f' NOT IMPLEMENTED YET', fg='yellow'))
 
