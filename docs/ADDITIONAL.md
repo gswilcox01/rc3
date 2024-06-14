@@ -8,17 +8,19 @@ This page documents some additional commands that didn't make sense to add to th
   * Updates examples in the current collection if there are any changes in the reference/example collection
   * Updates $schema in your current collection if there are new schemas (applies to requests, folders, collection, environments)
 * You will be prompted/must confirm YES before each upgrade step is done
-* Example output from a collection that has no upgrades possible:
+* Example output from a collection that had 1 example request out of date:
   ```
   $ rc upgrade
   Checking for possible upgrades...
   Checking RC_HOME schemas... OK
-  Checking current COLLECTION examples... OK
+  Checking current COLLECTION examples... UPGRADES NEEDED
+  Example folder has 1 out-of-date examples, 0 missing examples...
+  Would you like to create/update current COLLECTION examples [Y/n]:
+  Updating current COLLECTION examples... SUCCESS
   Checking current COLLECTION schemas... OK
   Checking current COLLECTION REQUEST extract JSON... NOT IMPLEMENTED YET
   Checking current COLLECTION validating JSON against current schemas... NOT IMPLEMENTED YET
   ```
-
 ## rc decode
 * This is a simple command that will decode a JWT in an environment & display the results
 * By default it will attempt to decode an env var named "token"

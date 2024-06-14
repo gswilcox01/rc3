@@ -17,6 +17,8 @@ def lookup_helper_value(var):
         return pkce_cvcc(var)
     if var.startswith("#uuid"):
         return uuid_helper(var)
+    if var.startswith("#secure_prompt"):
+        return secure_prompt_helper(var)
     if var.startswith("#prompt"):
         return prompt_helper(var)
     if var.startswith("#file"):
@@ -98,13 +100,18 @@ def uuid_helper(var):
     return value
 
 
-def prompt_helper(var):
+def secure_prompt_helper(var):
+    return prompt_helper(var, secure=True)
+
+
+def prompt_helper(var, secure=False):
     parts = var.split()
+    helper_name = parts[0]
     if len(parts) < 2:
-        raise click.ClickException('A prompt is required when using the #prompt helper function!')
+        raise click.ClickException(f'A prompt is required when using the {helper_name} helper function!')
 
     # look for a prompt + default
-    p = var[8:]
+    p = var[(len(helper_name)+1):]
     parts = p.split(":")
     default = ""
     if len(parts) > 1:
@@ -112,7 +119,7 @@ def prompt_helper(var):
         default = parts[1]
 
     # prompt for value, and return
-    return click.prompt(p, default=default)
+    return click.prompt(p, default=default, hide_input=secure)
 
 
 def file_helper_function(var):
