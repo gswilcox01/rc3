@@ -79,10 +79,13 @@ def check_collection_schemas():
 
     # RE out the partial name "request" from the following string
     # rc3-request-0.0.3.json
+    exclude = {'.git'}
     schema_re = re.compile(r'rc3-([a-z]*)-\d.\d.\d.json')
-    for dirpath, dirnames, files in os.walk(c_folder):
+    for root, dirs, files in os.walk(c_folder):
+        dirs[:] = [d for d in dirs if d not in exclude]
         for file in files:
-            full_file = os.path.join(dirpath, file)
+            full_file = os.path.join(root, file)
+            # print(full_file)
             full_json = json_helper.read_json_or_none(full_file)
             actual_schema = None if full_json is None else full_json.get('$schema', None)
             if actual_schema is not None:
