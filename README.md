@@ -273,9 +273,8 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 ## Settings:
 * Settings are mostly only documented in the default settings.json file & the settings schema
 * See: https://json.schemastore.org/rc3-settings-0.0.3.json
-* Or after running "rc init" see:
-  * RC_HOME/settings.json
-  * RC_HOME/schemas/rc3-settings-0.0.3.json
+* Or after running "rc" for the first time see:
+  * RC_HOME/rc-settings.json
 
 ## Proxies:
 * rc leverages Python Requests defaults which honors these ENV VARS for proxy settings:
