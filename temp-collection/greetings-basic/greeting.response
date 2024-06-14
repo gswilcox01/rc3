@@ -1,6 +1,6 @@
 {
     "status_code": 200,
-    "time": "209ms",
+    "time": "200ms",
     "size": {
         "body": 44,
         "headers": 591,
@@ -8,11 +8,11 @@
     },
     "headers": {
         "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
-        "set-cookie": "search=bob*, page=2, page_size=100, uuid=a668e00e-e0bb-46f1-9244-d0acec497158",
+        "set-cookie": "search=bob*, page=2, page_size=100, uuid=6d1901e1-4e64-49bd-87f6-919f56c25f4d",
         "xxx-movie": "bobo",
         "xxx-page": "71",
-        "xxx-uuid": "3f5ace33-bc69-49f1-a20b-784d3dae78b2",
-        "xxx-pkce-challenge": "vlnbpnFXRYxIqb4l3yGhfbeIsLQnJ7yiiAdzUIhsa6M",
+        "xxx-uuid": "348e5310-ce63-49cd-808e-cc9f74679806",
+        "xxx-pkce-challenge": "b_qJETHvmOtNkHxr0czflFA9iTnGpGT8NtPWGDGsAXM",
         "x-content-type-options": "nosniff",
         "x-xss-protection": "0",
         "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
@@ -20,7 +20,7 @@
         "expires": "0",
         "x-frame-options": "DENY",
         "content-type": "application/json",
-        "date": "Sat, 08 Jun 2024 23:54:30 GMT",
+        "date": "Fri, 14 Jun 2024 15:42:01 GMT",
         "server": "Google Frontend",
         "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
         "transfer-encoding": "chunked"

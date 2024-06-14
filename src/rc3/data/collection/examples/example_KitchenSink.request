@@ -26,10 +26,33 @@
             "any" : "json/object"
         }
     },
-    "extract": [{
-        "json_path": "$.path.in.json[2]",
-        "text_pattern": "regex with one (group.*) to extract",
-        "to": "global",
-        "var": "token"
-    }]
+    "extract": [
+        {
+            "json_path": "$.status_code",
+            "from": "response",
+            "to": "global",
+            "var": "lastStatusCode"
+        },
+        {
+            "json_path": "$.headers.set-cookie",
+            "from": "response",
+            "to": "global",
+            "var": "lastCookies"
+        },
+        {
+            "json_path": "$.sessionToken",
+            "to": "global",
+            "var": "sessionToken"
+        },
+        {
+            "text_pattern": "name=.code. value=\\\"(.*?)\\\"",
+            "to": "global",
+            "var": "authorizationCode"
+        },
+        {
+            "json_path": "$.access_token",
+            "to": "global",
+            "var": "token"
+        }
+    ]
 }

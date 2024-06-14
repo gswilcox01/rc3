@@ -143,8 +143,40 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * Pick a new current request (WITHOUT a list/prompt) & send it immediately
     * rc send --pick 7
 
+## Working with files
+* A common pattern might be to:
+  * save a GET response
+  * edit the JSON/response locally
+  * then PUT/POST back to save or create a new record
+* The "--file" option on the "rc send" command supports this flow
+  * When the "--file" option is used you must pass a filename with the option
+  * The contents of that filename will be used as the BODY of the request (overriding what's in the .request template)
+* An example below using the example collection; uses a GET response as a template for a new POST request.
+  ```
+  $ rc send greeting > my.json
+  $ vi my.json
+  $ rc send new-greeting --file my.json 
+  {
+  "id": 6,
+  "text": "Koar",
+  "language": "Martian"
+  }
+  ```
+* The "--file" option follows the convention of a "-" character for the filename represents STDIN
+* Using this feature you can pipe the output of 1 request into another, example below
+  ```
+  $ rc send greeting | rc send new-greeting --file -
+  {
+      "id": 7,
+      "text": "Hello",
+      "language": "English"
+  }
+  ```
+* If you wish to have file contents just override a portion of your .request template & not replace the entire BODY
+  * see the #file helper function in the additional help document [Helper Functions](docs/HELPER_FUNCTIONS.md)
+
 ## Additional Commands
-* For documentation on some more niche commands See: [Additional Commands](docs/ADDITIONAL.md)
+* For documentation on some more niche CLI commands See: [Additional Commands](docs/ADDITIONAL.md)
   * rc upgrade --- upgrades schemas & files in your collection
   * rc decode --- decodes/displays JWTs in your environment
 
@@ -202,6 +234,17 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * /greetings-basic/greeting.request
     * /greetings-oauth2/mint-admin-token.request
 
+## Helper Functions
+* Helper functions are similar to env var substitution, in that they use handlebar expressions that get replaced in your template
+* A simple example is the #uuid helper function, which replaces the expression with a UUID
+    * {{ #uuid }} 
+* For more complete documentation on helper functions see: [Helper Functions](docs/HELPER_FUNCTIONS.md)
+  * #uuid --- generates a new Type4 UUID
+  * #pkce_cvcc --- generates a PKCE code_verifier & code_challenge
+  * #prompt --- will prompt the user for input
+  * #secure_prompt --- will prompt the user for input (that is masked on screen)
+  * #file --- will inject '--file' option file contents into just a portion of your template
+
 ## Extracting values from a response:
 * You can extract a value from any response and save it into the current or global Environment
 * You can extract with either of:
@@ -210,10 +253,16 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * For an example of each see the following files in the example collection:
   * /examples/example_Extract_JsonPath.request
   * /examples/example_Extract_Regex.request
-  * /greetings-oauth2/mint-admin-token.request
-* All the examples above:
-  * Extract a top level "access_token" node from a JSON response
-  * And save the value in a variable named "token" in the "global" environment
+* For an example of using multiple extracts on 1 request, and various "to" and "from" options see:
+  * /examples/example_KitchenSink.request 
+* Extract "from" options:
+  * "body" --- will extract from the BODY of the response (this is the default)
+  * "response" --- will extract from the verbose output saved to .response file
+* Extract "to" options:
+  * "current" --- will extract to the currently selected env
+  * "global" --- will extract to the global env (this is the default)
+  * "stdout" --- will replace the normal stdout, to just the extracted value(s)
+  * "response" --- will extract to the verbose .response file that is generated
 * Read more about Json Path here:
   * https://www.digitalocean.com/community/tutorials/python-jsonpath-examples
   * https://www.baeldung.com/guide-to-jayway-jsonpath
@@ -222,7 +271,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   * https://docs.python.org/3/howto/regex.html
 
 ## Settings:
-* Settings are only documented in the default settings.json file & the settings schema
+* Settings are mostly only documented in the default settings.json file & the settings schema
 * See: https://json.schemastore.org/rc3-settings-0.0.3.json
 * Or after running "rc init" see:
   * RC_HOME/settings.json

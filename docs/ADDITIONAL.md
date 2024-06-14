@@ -5,9 +5,9 @@ This page documents some additional commands that didn't make sense to add to th
 * This command is meant to upgrade your rc collection files created with a prior release of rc to the latest format/schemas.
 * It is a work in progress, and currently does the following 3 things:
   * Updates $schema in RC_HOME, settings & global-env
-  * Updates examples in the current collection if any changes/new examples
+  * Updates examples in the current collection if there are any changes in the reference/example collection
   * Updates $schema in your current collection if there are new schemas (applies to requests, folders, collection, environments)
-* You will be prompted/must confirm before each upgrade is done
+* You will be prompted/must confirm YES before each upgrade step is done
 * Example output from a collection that has no upgrades possible:
   ```
   $ rc upgrade
