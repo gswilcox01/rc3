@@ -20,7 +20,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * Upgrade
     * pip install --upgrade rc3
 * Windows User?
-    * See:  [Windows Setup Issues](WINDOWS_SETUP.md)
+    * See:  [Windows Setup Issues](docs/WINDOWS_SETUP.md)
 
 ## Setup & Send your first request
 * First create an empty directory somewhere (any name & location is fine)
