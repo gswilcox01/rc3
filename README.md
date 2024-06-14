@@ -231,7 +231,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   2. Global environment in RC_HOME
   3. SHELL/OS ENVIRONMENT
 * For examples of variable placeholders, see the following files in the example collection:
-    * /greetings-basic/greeting.request
+    * /greetings-basic/rc-folder.json
     * /greetings-oauth2/mint-admin-token.request
 
 ## Helper Functions
