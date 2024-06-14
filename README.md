@@ -143,6 +143,11 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * Pick a new current request (WITHOUT a list/prompt) & send it immediately
     * rc send --pick 7
 
+## Additional Commands
+* For documentation on some more niche commands See: [Additional Commands](docs/ADDITIONAL.md)
+  * rc upgrade --- upgrades schemas & files in your collection
+  * rc decode --- decodes/displays JWTs in your environment
+
 ## Viewing help
 * View overall help and a list of all available sub-commands
     * rc
