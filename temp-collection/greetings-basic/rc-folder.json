@@ -4,6 +4,6 @@
     "auth": {
         "type": "basic",
         "username": "gary",
-        "password": "{{ #secure_prompt password }}"
+        "password": "{{ password }}"
     }
 }

@@ -49,6 +49,18 @@
   },
   ```
 
+## #secure_prompt helper function
+* This helper function will be replaced with a response entered by the user
+* This helper function is the same as the #prompt helper function, EXCEPT the user input is hidden on the terminal when entered
+* An example of using this to collect a password
+  ```
+  "auth": {
+    "type": "basic",
+    "username": "{{ #prompt username }}",
+    "password": "{{ #secure_prompt password }}",
+  },
+  ```
+
 ## #file helper function
 * This helper function will be replaced with the contents of a file passed to rc with the --file option
 * Normally the "--file" option replaces/overrides the entire BODY sent with your request
