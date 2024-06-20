@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rc3"
-version = "0.0.9"
+version = "0.0.10"
 authors = [
   { name="Gary Wilcox" },
   { email="gary@dugan-wilcox.com" }
@@ -26,7 +26,8 @@ dependencies = [
     "jsonpath-ng",
     "funcy",
     "pkce",
-    "pyjwt"
+    "pyjwt",
+    "keyring"
 ]
 
 [project.optional-dependencies]
