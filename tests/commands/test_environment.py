@@ -61,7 +61,7 @@ def test_edit_withsave(runner, example_collection, monkeypatch):
 
 def test_edit_errors(runner, example_collection, monkeypatch):
     e, wrapper = lookup_current()
-    # invalid, schema calls for all strings as values
+    # invalid, schema calls for anyof(string, null) as values
     e['bob'] = 2112
     monkeypatch.setattr(click, "edit", lambda x: print_helper.get_json_string(e))
 
@@ -69,7 +69,7 @@ def test_edit_errors(runner, example_collection, monkeypatch):
     result = runner.invoke(cli.cli, ['e', "--edit"])
     assert result.exit_code == 0
     assert "JSON is invalid" in result.output
-    assert "2112 is not of" in result.output
+    assert "2112 is not valid" in result.output
 
     # new file should NOT have the edits
     e2, wrapper2 = lookup_current()

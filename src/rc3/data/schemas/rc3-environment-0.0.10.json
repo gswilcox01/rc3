@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://json.schemastore.org/rc3-environment-0.0.3.json",
+    "$id": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.10/src/rc3/data/schemas/rc3-environment-0.0.10.json",
     "title": "rc3 environment",
     "description": "RC environment for both Global and per Collection environments",
     "type": "object",
@@ -10,5 +10,10 @@
             "type": "string"
         }
     },
-    "additionalProperties": {"type": "string"}
+    "additionalProperties": {
+        "anyOf": [
+            { "type": "string" },
+            { "type": "null" }
+        ]
+    }
 }

@@ -4,6 +4,7 @@ import re
 import uuid
 
 import click
+import keyring
 import pkce
 from click import prompt
 
@@ -23,6 +24,10 @@ def lookup_helper_value(var):
         return prompt_helper(var)
     if var.startswith("#file"):
         return file_helper_function(var)
+    if var.startswith("#keyring_prompt"):
+        return keyring_prompt_helper(var)
+    if var.startswith("#keyring"):
+        return keyring_helper(var)
     raise click.ClickException(
         f'handlebar helper_function [{var}] is invalid!')
 
@@ -133,6 +138,37 @@ def file_helper_function(var):
     # ALWAYS return as a string
     # if subbing into the JSON body, the string will get converted back to JSON/dict after subs
     return file_helper.consume_as_string()
+
+
+def keyring_prompt_helper(var):
+    parts = var.split()
+    helper_name = parts[0]
+    if len(parts) != 2:
+        raise click.ClickException(f'The {helper_name} helper function requires exactly 1 parameter')
+    name = parts[1]
+    value = keyring.get_password("rc3", name)
+    if value is None:
+        print(f'Your keyring doesn\'t contain a value for NAME({name})"')
+        print('Prompting for a value rc will use with this request AND store in your keyring')
+        _prompt = f"Please enter a value for NAME({name})"
+        value = click.prompt(_prompt, default=None, hide_input=True)
+        keyring.set_password("rc3", name, value)
+        return value
+    return value
+
+
+def keyring_helper(var):
+    parts = var.split()
+    helper_name = parts[0]
+    if len(parts) != 2:
+        raise click.ClickException(f'The {helper_name} helper function requires exactly 1 parameter')
+    name = parts[1]
+    value = keyring.get_password("rc3", name)
+    if value is None:
+        raise click.ClickException(f'The {helper_name} helper function requires the NAME({name}) parameter to exist '
+                                   f'in the keyring.  Please see the \'rc keyring\' command for setting values in the '
+                                   f'keyring.')
+    return value
 
 
 
