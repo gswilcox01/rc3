@@ -61,6 +61,33 @@
   },
   ```
 
+## #keyring helper function
+* This helper function will be replaced with a value from your OS keyring (Keychain, or Windows Cred Locker)
+* A required parameter is the NAME to read from your OS keyring
+* An example where both a lan_username and lan_password have been stored in your OS keyring
+  ```
+  "auth": {
+    "type": "basic",
+    "username": "{{ #keyring lan_username }}",
+    "password": "{{ #keyring lan_password }}",
+  },
+  ```
+
+## #keyring_prompt helper function
+* This helper function will be replaced with a value from your OS keyring (Keychain, or Windows Cred Locker)
+* A required parameter is the NAME to read from your OS keyring
+* This helper function is very similar to the "keyring" helper, except:
+    * If the NAME does not exist in your keyring, you will be prompted for the value
+    * The provided value will be used for this request AND stored in your keyring for future requests
+* An example where a lan_password might be stored in your OS keyring
+  ```
+  "auth": {
+    "type": "basic",
+    "username": "gary",
+    "password": "{{ #keyring_prompt lan_password }}",
+  },
+  ```
+
 ## #file helper function
 * This helper function will be replaced with the contents of a file passed to rc with the --file option
 * Normally the "--file" option replaces/overrides the entire BODY sent with your request
