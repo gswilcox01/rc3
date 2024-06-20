@@ -49,3 +49,34 @@ This page documents some additional commands that didn't make sense to add to th
   Curr time:  Thu Jun 13 18:26:36 2024
   Expires at: Thu Jun 13 19:26:23 2024
   ```
+## rc keyring
+* This is a simple command that will GET, SET, or DELETE values in your operating system keyring
+* By default this is the macOs Keychain, or Windows Credential Locker
+* Other keyrings/backends are available, but YMMV, see: https://github.com/jaraco/keyring
+* An example setting a value for the name "password":
+  ```
+  $ rc keyring password
+  Please enter a value for NAME(password):
+  ```
+* An example getting a value for the name "password":
+  ```
+  $ rc keyring --get password
+  pass
+  ```
+* An example using a keyring NVP named "password" in an ENV file:
+  ```
+  {
+    "password": "{{ #keyring password }}"
+  }
+  ```
+* An example using a keyring NVP named "password" in a .request template:
+  ```
+  {
+      ...
+      "auth": {
+          "type": "basic",
+          "username": "gary",
+          "password": "{{ #keyring password }}"
+      }
+  }
+  ```

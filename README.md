@@ -179,6 +179,7 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
 * For documentation on some more niche CLI commands See: [Additional Commands](docs/ADDITIONAL.md)
   * rc upgrade --- upgrades schemas & files in your collection
   * rc decode --- decodes/displays JWTs in your environment
+  * rc keyring --- get/set/delete values in your OS keyring (Keychain, or Win Cred Locker)
 
 ## Viewing help
 * View overall help and a list of all available sub-commands
@@ -243,6 +244,8 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
   * #pkce_cvcc --- generates a PKCE code_verifier & code_challenge
   * #prompt --- will prompt the user for input
   * #secure_prompt --- will prompt the user for input (that is masked on screen)
+  * #keyring_prompt --- will read a value from your OS keyring, or secure prompt for a value 
+  * #keyring --- will read a value from your OS keyring (Keychain or Win Cred Locker)
   * #file --- will inject '--file' option file contents into just a portion of your template
 
 ## Extracting values from a response:
