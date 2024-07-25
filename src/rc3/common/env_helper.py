@@ -2,6 +2,7 @@ import json
 import os
 import re
 import click
+import keyring
 
 from rc3.common import json_helper, print_helper, helper_functions, decorators
 
@@ -78,6 +79,14 @@ def lookup_var_value(envs, var, seen=None):
                 inner_value = lookup_var_value(envs, inner_var, seen)
                 outer_value = outer_value.replace(match.group(0), inner_value)
             return outer_value
+
+    # if not found in any ENV, before returning an error, attempt to lookup in keyring
+    parts = var.split()
+    if len(parts) == 1:
+        value = keyring.get_password("rc3", var)
+        # only use value from keyring if there and longer than 0
+        if value is not None and len(value) > 0:
+            return value
 
     # not found in any envs, so return an error
     raise click.ClickException(
