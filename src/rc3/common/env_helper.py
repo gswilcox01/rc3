@@ -70,12 +70,16 @@ def lookup_var_value(envs, var, seen=None):
 
     for env in envs:
         if var in env:
+            # first lookup of VAR in an env
             outer_value = env.get(var)
+            # second lookup, in case the looked up VAR value is also a mustache "{{ something }}" that needs lookup
             for match in PATTERN.finditer(outer_value):
                 inner_var = match.group(1).strip()
                 inner_value = lookup_var_value(envs, inner_var, seen)
                 outer_value = outer_value.replace(match.group(0), inner_value)
             return outer_value
+
+    # not found in any envs, so return an error
     raise click.ClickException(
         f'var {{{{{var}}}}} is in the REQUEST but cannot be found in the current, global, or OS environment')
 

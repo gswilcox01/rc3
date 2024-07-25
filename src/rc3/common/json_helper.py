@@ -241,20 +241,21 @@ def write_collection(wrapper):
 @rc_memoized
 def read_request_list():
     c, c_wrapper = read_current_collection()
-    root = c_wrapper['_dir']
+    start = c_wrapper['_dir']
     current_request = c.get('current_request', "")
     _list = []
     number = 0
-    for dirpath, dirnames, files in os.walk(root):
-        for file in files:
-            if dirpath.endswith('examples'):
+    for root, dirs, files in os.walk(start):
+        dirs.sort()
+        for file in sorted(files):
+            if root.endswith('examples'):
                 continue
             if file.endswith('.request'):
                 number = number + 1
                 display_num = str(number)
 
                 short_file = file.split('.')[0]
-                short_path = dirpath.replace(root, "")
+                short_path = root.replace(start, "")
                 short_path = short_path.replace("\\", "/")
                 short_request = short_path + "/" + file
                 current = False
@@ -264,7 +265,7 @@ def read_request_list():
                     display_num += '*'
 
                 # read each request to get the METHOD
-                r = load_and_validate(file, _dir=dirpath)
+                r = load_and_validate(file, _dir=root)
                 method = r.get('method', '')
 
                 # edit path further for display
@@ -274,7 +275,7 @@ def read_request_list():
                 _list.append({
                     '_index': number - 1,
                     '_current': current,
-                    '_dir': dirpath,
+                    '_dir': root,
                     '_filename': file,
                     '_original': r,
                     '_display_ref': str(number) + ":" + short_request,
@@ -295,10 +296,11 @@ def read_environment_list():
     env_folder = os.path.join(c_wrapper['_dir'], 'environments')
     _list = []
     idx = 0
-    for dirpath, dirnames, files in os.walk(env_folder):
-        for file in files:
+    for root, dirs, files in os.walk(env_folder):
+        dirs.sort()
+        for file in sorted(files):
             if file.endswith('.json'):
-                env = load_and_validate(file, _dir=dirpath)
+                env = load_and_validate(file, _dir=root)
                 name = file.split('.')[-2]
                 idx = idx + 1
                 number = str(idx)
@@ -310,7 +312,7 @@ def read_environment_list():
                 _list.append({
                     '_index': idx - 1,
                     '_current': current,
-                    '_dir': dirpath,
+                    '_dir': root,
                     '_filename': file,
                     '_original': env,
                     'name': file.split('.')[-2],
