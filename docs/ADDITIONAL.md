@@ -58,25 +58,22 @@ This page documents some additional commands that didn't make sense to add to th
   $ rc keyring password
   Please enter a value for NAME(password):
   ```
-* An example getting a value for the name "password":
+* An example inspecting a value for the name "password" (Note: you won't normally do this unless you want to double-check what value you have stored in the keyring):
   ```
   $ rc keyring --get password
   pass
   ```
-* An example using a keyring NVP named "password" in an ENV file:
+* By default, env var substitution checks the following locations in this order 1. Current env, 2. Global env, 3. Shell env, 4. Keyring.
+* So, keyring values will automatically be found/replaced in mustache/handlebar expressions, AS LONG as there is not an env var with the same name.
+* An example using a keyring NVP based on this default handling:
+  ```
+  {
+    "password": "{{ password }}"
+  }
+  ```
+* An example using a keyring NVP only (and NOT checking env vars first):
   ```
   {
     "password": "{{ #keyring password }}"
-  }
-  ```
-* An example using a keyring NVP named "password" in a .request template:
-  ```
-  {
-      ...
-      "auth": {
-          "type": "basic",
-          "username": "gary",
-          "password": "{{ #keyring password }}"
-      }
   }
   ```

@@ -245,6 +245,8 @@ If you'd like to install with "pipx" in Windows that works fine as well, but is 
   1. Current environment in collection
   2. Global environment in RC_HOME
   3. SHELL/OS ENVIRONMENT
+  4. Keyring values (MacOS Keychain, Windows Cred Locker)
+     * For more info see "keyring" command here: [Additional Commands](docs/ADDITIONAL.md)
 * For examples of variable placeholders, see the following files in the example collection:
     * /greetings-basic/rc-folder.json
     * /greetings-oauth2/mint-admin-token.request
