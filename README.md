@@ -12,15 +12,29 @@ rc is based on Collections, Environments and Requests.  Similar to the tool we a
     * A detailed *.response file saved in the same directory as the *.request file sent
 
 ## Installation & Upgrade
+rc is installed as a Python script.  The instructions below should work fine for most users.  Please reach out if they don't.
+The MacOS instructions leverage "pipx" to install in a Python virtualenv instead of with your system Python modules. 
+
+If you'd like to install with "pipx" in Windows that works fine as well, but is not documented here.  See: https://github.com/pypa/pipx
 * Pre-reqs
     * Python 3.12+ (required)
     * VSCode (optional, but highly recommended)
-* Install
-    * pip install rc3
-* Upgrade
-    * pip install --upgrade rc3
-* Windows User?
-    * See:  [Windows Setup Issues](docs/WINDOWS_SETUP.md)
+* Windows:
+    * Install  
+      * pip install rc3
+    * Upgrade
+      * pip install --upgrade rc3
+    * Windows Troubleshooting
+      * See:  [Windows Setup Issues](docs/WINDOWS_SETUP.md)
+* MacOS
+    * Pre-reqs 
+      * brew install python
+      * brew install pipx
+      * pipx ensurepath
+    * Install
+      * pipx install rc3
+    * Upgrade
+      * pipx upgrade rc3
 
 ## Setup & Send your first request
 * First create an empty directory somewhere (any name & location is fine)
