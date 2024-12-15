@@ -242,3 +242,35 @@ def test_3x_recursive_loop_caught(example_collection, runner):
         env_helper.process_subs(wrapper)
 
     assert "has caused an infinite loop during lookup" in str(exception_info.value)
+
+
+def test_lookup_one(example_collection, runner):
+    add_to_current("my", "mom")
+    add_to_global("my", "dad")
+    add_to_shell("my", "grandma")
+
+    r = env_helper.lookup_one_var("my")
+    assert r == "mom"
+
+
+def test_lookup_one_global(example_collection, runner):
+    add_to_global("my", "dad")
+    add_to_shell("my", "grandma")
+
+    r = env_helper.lookup_one_var("my")
+    assert r == "dad"
+
+
+def test_lookup_one_environment(example_collection, runner):
+    add_to_shell("my", "grandma")
+
+    r = env_helper.lookup_one_var("my")
+    assert r == "grandma"
+
+
+def test_vars_no_pound(example_collection, runner):
+    add_to_current("#uuid", "mom")
+
+    r = env_helper.lookup_one_var("#uuid")
+    # vars can never start with a #, instead a helper function must exist
+    assert r != "mom"
