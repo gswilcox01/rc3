@@ -24,6 +24,24 @@ def clean_home(tmp_path, monkeypatch, autouse=True):
 
 
 @pytest.fixture(scope="function")
+def yes_cache(monkeypatch):
+    monkeypatch.setenv('RC_NO_CACHE', "False")
+    yield "True"
+
+
+@pytest.fixture(scope="function")
+def yes_durations(monkeypatch):
+    monkeypatch.setenv('RC_DURATIONS', "True")
+    yield "True"
+
+
+@pytest.fixture(scope="function")
+def no_durations(monkeypatch):
+    monkeypatch.setenv('RC_DURATIONS', "False")
+    yield "False"
+
+
+@pytest.fixture(scope="function")
 def clean_rc(clean_home, monkeypatch):
     rc_home = os.path.join(clean_home, '.rc')
     os.mkdir(rc_home)

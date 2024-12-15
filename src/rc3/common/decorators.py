@@ -1,5 +1,6 @@
 import collections
 import collections.abc
+import functools
 import os
 
 from funcy import print_durations, decorator
@@ -25,8 +26,11 @@ def rc_memoized(call):
     no_cache = os.getenv("RC_NO_CACHE", 'False').lower() in ('true', '1')
     if no_cache:
         return call()
-    if not isinstance(args, collections.Hashable):
-        return call()
+    for arg in args:
+        if not isinstance(arg, collections.Hashable):
+            return call()
+    # if not isinstance(args, collections.Hashable):
+    #     return call()
 
     my_cache = super_cache.get(func_name)
     if my_cache is None:
