@@ -11,6 +11,13 @@ state = {
 }
 
 
+def reset_for_test():
+    state['has_file'] = False
+    state['consumed'] = False
+    state['_json'] = None
+    state['_text'] = None
+
+
 def preprocess_file_option(file):
     if file is not None:
         state['has_file'] = True

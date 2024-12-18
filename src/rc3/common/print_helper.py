@@ -81,17 +81,3 @@ def print_formatted_table(header, fields, _list):
             new_row.append(row[field])
         # then print it
         print(line_format.format(*new_row))
-
-
-def test_formatted_table():
-    header = ['IDENTIFIER:', 'NAME:']
-    fields = ['id', 'name']
-    _list = [
-        {'id': 1, 'name': 'gary'},
-        {'id': 2, 'name': 'bob maloney'}
-    ]
-    print_formatted_table(header, fields, _list)
-
-
-if __name__ == '__main__':
-    test_formatted_table()

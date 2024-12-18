@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -62,3 +63,42 @@ def example_collection(clean_empty, runner):
     result = runner.invoke(cli.cli, ['new'], input='example-collection\n\n')
     assert result.exit_code == 0
     yield clean_empty
+
+@pytest.fixture
+def text_file(tmp_path):
+    file_path = tmp_path / "my.txt"
+    file_path.write_text("Hello, World!")
+    return file_path
+
+
+@pytest.fixture
+def json_file(tmp_path):
+    file_path = tmp_path / "my.json"
+    with open(file_path, 'w') as fh:
+        json.dump({
+            "text": "Koar",
+            "language": "Martian"
+        }, fh)
+    return file_path
+
+
+@pytest.fixture
+def bad_json_file(example_collection):
+    file_path = Path(example_collection) / "bad.request"
+    # bad json, no schema attribute, no opening brace
+    file_path.write_text('"method": "GET",\n"url": "{{baseUrl}}/v1/greetings/1"\n}"')
+    return file_path
+
+
+@pytest.fixture
+def bad_request_file(example_collection):
+    file_path = Path(example_collection) / "bad_structure.request"
+    with open(file_path, 'w') as fh:
+        # "G" is not a valid method
+        json.dump({
+            "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8/src/rc3/data/schemas/rc3-request-0.0.8.json",
+            "method": "G",
+            "url": "{{baseUrl}}/v1/greetings/1"
+        }, fh)
+    return file_path
+

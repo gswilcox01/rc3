@@ -32,8 +32,8 @@ def guess_schema(filename):
 @rc_memoized
 def guess_dir(filename):
     home = config_helper.get_config_folder()
-    if filename in [SETTINGS_FILENAME, GLOBAL_ENV_FILENAME]:
-        return home
+    # if filename in [SETTINGS_FILENAME, GLOBAL_ENV_FILENAME]:
+    #     return home
     if filename in os.listdir(home):
         return home
 
@@ -79,8 +79,7 @@ def load_and_validate(filename, schema=None, _dir=None):
 
     file = os.path.join(_dir, filename)
     if not os.path.exists(file):
-        print("Can't find: " + filename)
-        sys.exit()
+        raise click.ClickException("Can't find: " + filename)
 
     _dict = read_json(file)
     schema_dict = read_json(data_helper.get_schema_file(schema))
@@ -127,20 +126,20 @@ def validate(_dict, schema=None):
     sys.exit()
 
 
-@rc_print_durations
-def validate_schemas():
-    check_schema(data_helper.get_schema_file('auth'))
-    check_schema(data_helper.get_schema_file('collection'))
-    check_schema(data_helper.get_schema_file('environment'))
-    check_schema(data_helper.get_schema_file('folder'))
-    check_schema(data_helper.get_schema_file('request'))
-    check_schema(data_helper.get_schema_file('settings'))
-
-
-def check_schema(_file):
-    _dict = read_json(_file)
-    validator = Draft7Validator(_dict, registry=create_registry())
-    validator.check_schema(_dict)
+# @rc_print_durations
+# def validate_schemas():
+#     check_schema(data_helper.get_schema_file('auth'))
+#     check_schema(data_helper.get_schema_file('collection'))
+#     check_schema(data_helper.get_schema_file('environment'))
+#     check_schema(data_helper.get_schema_file('folder'))
+#     check_schema(data_helper.get_schema_file('request'))
+#     check_schema(data_helper.get_schema_file('settings'))
+#
+#
+# def check_schema(_file):
+#     _dict = read_json(_file)
+#     validator = Draft7Validator(_dict, registry=create_registry())
+#     validator.check_schema(_dict)
 
 
 @rc_memoized
