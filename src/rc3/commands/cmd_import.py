@@ -24,5 +24,4 @@ def valid_collection_check():
     cwd = os.getcwd()
     dest = os.path.join(cwd, COLLECTION_FILENAME)
     if not os.path.exists(dest):
-        print("CWD must contain a valid rc-collection.json file")
-        raise click.Abort()
+        raise click.ClickException("CWD must contain a valid rc-collection.json file")
