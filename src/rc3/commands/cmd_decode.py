@@ -4,6 +4,7 @@ import time
 
 import click
 import jwt
+from click import ClickException
 
 from rc3.commands import cmd_list
 from rc3.common import json_helper, print_helper, config_helper, env_helper
@@ -19,7 +20,10 @@ def cli(jwt_env_var):
 
     """
     var = 'token' if jwt_env_var is None else jwt_env_var
-    value = env_helper.lookup_one_var(var)
+    try:
+        value = env_helper.lookup_one_var(var)
+    except ClickException:
+        raise click.ClickException(f"No ENV VAR found for [{var}]")
     if value is None:
         raise click.ClickException(f"No ENV VAR found for [{var}]")
 

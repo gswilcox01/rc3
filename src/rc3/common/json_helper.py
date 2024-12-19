@@ -363,8 +363,7 @@ def read_environment(name):
 
 def write_environment(filename, data):
     if filename == SETTINGS_FILENAME:
-        print("wtf?")
-        sys.exit(-1)
+        raise click.ClickException("WTF?  Contact Gary, code is trying to write rc-settings as an environment!")
     _dir = guess_dir(filename)
     write_json(os.path.join(_dir, filename),
                data)

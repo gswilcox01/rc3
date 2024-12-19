@@ -46,3 +46,33 @@ def test_read_or_none(bad_json_file, bad_request_file):
     filename = bad_request_file.name
     _dict = json_helper.read_json_or_none(filename)
     assert _dict['method'] == "G"
+
+
+def test_parse_bad_json():
+    # invalid JSON file, returns None
+    bad_json = '"bad": "man", "dont": "parse" }'
+    r = json_helper.parse_json(bad_json)
+    assert r is None
+
+
+def test_read_collection(example_collection, tmp_path):
+    # starting place will example_collection
+    c, wrapper = json_helper.read_collection()
+    assert '$schema' in c
+    assert '_dir' in wrapper
+    assert '_original' in wrapper
+
+    d = tmp_path / "empty2"
+    d.mkdir()
+    os.chdir(d)
+    with pytest.raises(ClickException, match=r'Can\'t find: rc-collection.json'):
+        c, wrapper = json_helper.read_collection()
+
+
+def test_write_environment_edge(example_collection):
+    fn, env = json_helper.read_environment("current")
+    env['new'] = 'name'
+    json_helper.write_environment(fn, env)
+
+    with pytest.raises(ClickException, match=r'WTF\?  Contact Gary'):
+        json_helper.write_environment("rc-settings.json", env)
