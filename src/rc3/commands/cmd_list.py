@@ -37,8 +37,7 @@ def list_collections():
     _list = json_helper.read_collection_list()
 
     if len(_list) == 0:
-        click.echo("No COLLECTIONS found in settings.json")
-        raise click.Abort()
+        raise click.ClickException("No COLLECTIONS found in settings.json")
     click.echo("Listing COLLECTIONS found in settings.json:")
 
     # now display table
@@ -51,8 +50,7 @@ def list_environments():
     _list = json_helper.read_environment_list()
 
     if len(_list) == 0:
-        click.echo("No ENVIRONMENTS found in current_collection")
-        raise click.Abort()
+        raise click.ClickException("No ENVIRONMENTS found in current_collection")
     click.echo("Listing ENVIRONMENTS found in current_collection:")
 
     # now display table
@@ -65,8 +63,7 @@ def list_requests():
     _list = json_helper.read_request_list()
 
     if len(_list) == 0:
-        click.echo("No REQUESTS found in current_collection")
-        raise click.Abort()
+        raise click.ClickException("No REQUESTS found in current_collection")
     click.echo("Listing REQUESTS found in current_collection:")
 
     # now display table

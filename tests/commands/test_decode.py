@@ -56,3 +56,15 @@ def test_decode_custom_name(example_collection, oauth2_token, runner):
     assert "sub" in result.output
     assert "Issued at:" in result.output
     assert "Expired at:" in result.output
+
+
+def test_decode_invalid_token(example_collection, oauth2_token, runner):
+    # setup ENV VAR
+    fn, env = json_helper.read_environment("global")
+    env['custom'] = "random crap"
+    json_helper.write_environment(fn, env)
+
+    # custom name, now works
+    result = runner.invoke(cli.cli, ['decode', 'custom'])
+    assert result.exit_code == 1
+    assert "There was an error decoding the JWT" in result.output
