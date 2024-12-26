@@ -1,0 +1,16 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: '{"timestamp":"2024-12-26T16:10:26.145+00:00","status":415,"error":"Unsupported
+      Media Type","message":"Content-Type ''text/plain;charset=UTF-8'' is not supported.","path":"/v1/greetings"}'
+    content_type: text/plain
+    method: POST
+    status: 415
+    url: https://greetings-mvrsygo3gq-uc.a.run.app/v1/greetings
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":7,"text":"Koar","language":"Martian"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: https://greetings-mvrsygo3gq-uc.a.run.app/v1/greetings

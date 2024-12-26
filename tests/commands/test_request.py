@@ -63,7 +63,7 @@ def test_edit_withsave(runner, example_collection, monkeypatch):
     assert print_helper.get_json_string(r) == print_helper.get_json_string(r2)
 
 
-def test_edit_errors(runner, example_collection, monkeypatch):
+def test_edit_schema_error(runner, example_collection, monkeypatch):
     r, wrapper = lookup_current()
     r['method'] = "WHAT?"
     monkeypatch.setattr(click, "edit", lambda x: print_helper.get_json_string(r))
@@ -77,6 +77,15 @@ def test_edit_errors(runner, example_collection, monkeypatch):
     # new file should NOT have the edits
     r2, wrapper2 = lookup_current()
     assert print_helper.get_json_string(r) != print_helper.get_json_string(r2)
+
+
+def test_edit_json_error(runner, example_collection, monkeypatch):
+    monkeypatch.setattr(click, "edit", lambda x: "What?  I'm not JSON!")
+
+    # edit with SAVE should VALIDATE JSON is JSON and error out
+    result = runner.invoke(cli.cli, ['r', "--edit"])
+    assert result.exit_code == 1
+    assert "new REQUEST must be valid JSON" in result.output
 
 
 def test_edit_unknown(runner, example_collection, monkeypatch):

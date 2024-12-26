@@ -1,0 +1,22 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":6,"text":"Koar","language":"Martian"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: http://localhost:8080/v1/greetings
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":7,"text":"Hello","language":"English"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: http://localhost:8080/v1/greetings
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":8,"text":"Hello","language":"English"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: http://localhost:8080/v1/greetings

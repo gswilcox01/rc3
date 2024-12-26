@@ -1,0 +1,15 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":19,"text":"Koar","language":"Martian"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: https://greetings-mvrsygo3gq-uc.a.run.app/v1/greetings
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":20,"text":"Koar","language":"Martian"}'
+    content_type: text/plain
+    method: POST
+    status: 200
+    url: https://greetings-mvrsygo3gq-uc.a.run.app/v1/greetings

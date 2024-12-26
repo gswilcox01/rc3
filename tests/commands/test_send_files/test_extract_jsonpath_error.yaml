@@ -1,0 +1,8 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: ''
+    content_type: text/plain
+    method: GET
+    status: 401
+    url: https://greetings-mvrsygo3gq-uc.a.run.app/v3/greetings/1

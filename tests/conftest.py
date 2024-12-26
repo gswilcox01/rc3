@@ -64,10 +64,17 @@ def example_collection(clean_empty, runner):
     assert result.exit_code == 0
     yield clean_empty
 
+
 @pytest.fixture
 def text_file(tmp_path):
     file_path = tmp_path / "my.txt"
     file_path.write_text("Hello, World!")
+    return file_path
+
+
+@pytest.fixture
+def missing_file(tmp_path):
+    file_path = tmp_path / "missing.txt"
     return file_path
 
 
@@ -78,6 +85,17 @@ def json_file(tmp_path):
         json.dump({
             "text": "Koar",
             "language": "Martian"
+        }, fh)
+    return file_path
+
+
+@pytest.fixture
+def json_english_file(tmp_path):
+    file_path = tmp_path / "my_english.json"
+    with open(file_path, 'w') as fh:
+        json.dump({
+            "text": "Hello",
+            "language": "English"
         }, fh)
     return file_path
 

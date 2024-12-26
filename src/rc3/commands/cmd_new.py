@@ -62,8 +62,7 @@ def import_collection():
     # get "name" from json, or abort
     name = collection_dict.get("name", None)
     if name is None:
-        print("Error: rc-collection.json doesn't have a valid name attribute")
-        raise click.Abort
+        raise click.ClickException("Error: rc-collection.json doesn't have a valid name attribute")
 
     # for any .defaults environments in the collection, copy them to .json (i.e. make a real environment)
     # note: there should also be a .gitignore in the env folder, so .json doesn't get committed
