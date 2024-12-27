@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.8/src/rc3/data/schemas/rc3-request-0.0.8.json",
+    "$id": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.13b1/src/rc3/data/schemas/rc3-request-0.0.13.json",
     "title": "rc3 request",
     "description": "RC request information",
     "type": "object",
@@ -93,7 +93,7 @@
                 "to" : {
                     "description": "Where to store the extracted value",
                     "type": "string",
-                    "enum": ["current", "global", "stdout", "response"]
+                    "enum": ["current", "global", "stdout", "response", "keyring"]
                 },
                 "var" : {
                     "description": "Var name used to store the extracted value",

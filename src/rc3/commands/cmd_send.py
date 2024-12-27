@@ -169,7 +169,7 @@ def process_output(wrapper, response):
     cli_options = rc_globals.get_cli_options()
     request = wrapper.get('_original')
 
-    # process potential extract, and update env file
+    # process potential extracts, and update env files if needed
     extract_buffer = process_extracts(request, response)
     verbose_output = extract_buffer['verbose_output']   # will also have extract_errors & extracted now
 
@@ -180,7 +180,7 @@ def process_output(wrapper, response):
                                          wrapper.get('_filename').split('.')[0] + ".response")
         json_helper.write_json(response_filename, verbose_output)
 
-    # if extracted to STDOUT that overrides everything
+    # if extracted to STDOUT that overrides anything else that might be printed to STDOUT
     # otherwise print verbose or just response.body
     if len(extract_buffer['stdout']) > 0:
         print_helper.print_json(extract_buffer['stdout'])
@@ -191,7 +191,8 @@ def process_output(wrapper, response):
 
 
 def process_extracts(request, response):
-    # env extracts will go straight to the env, but other "to"s and errors collected here
+    # env & keyring extracts will go straight to those locations
+    # BUT other targets/tos, will be collected here in the extract_buffer
     verbose_output = create_verbose_output(response)
     verbose_output['extract_errors'] = []
     verbose_output['extracted'] = {}
@@ -207,24 +208,33 @@ def process_extracts(request, response):
     if extract_list is None or len(extract_list) == 0:
         return extract_buffer
 
+    # otherwise, we will have 1..n extracts, process each individually
     for extract in extract_list:
         process_one_extract(extract, response, extract_buffer)
     return extract_buffer
 
 
 def process_one_extract(extract, response, extract_buffer):
+    # extract example from KitchenSink example:
+    #     "extract": [{
+    #         "json_path": "$.access_token",
+    #         "to": "global",
+    #         "var": "token"
+    #     }]
     to_environment = False
     to = extract.get("to", "global")
     if to in ["global", "current"]:
         to_environment = True
         env_filename, env = json_helper.read_environment(to)
 
+    # do the extraction, whether it's json_path or regex/text_pattern
     value = None
     if "json_path" in extract:
         value = extract_json_path(extract, response, extract_buffer)
     elif "text_pattern" in extract:
         value = extract_regex(extract, response, extract_buffer)
 
+    # write to target location/to
     # write to environment if that is the output
     # otherwise write to the buffer where we are collecting 1..n extracts
     var = extract.get("var", "token")
