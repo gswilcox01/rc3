@@ -5,6 +5,7 @@ import re
 from json import JSONDecodeError
 
 import click
+import keyring
 import requests
 from jsonpath_ng import parse
 from requests.auth import HTTPBasicAuth, AuthBase
@@ -215,17 +216,12 @@ def process_extracts(request, response):
 
 
 def process_one_extract(extract, response, extract_buffer):
-    # extract example from KitchenSink example:
+    # extract example from KitchenSink.json:
     #     "extract": [{
     #         "json_path": "$.access_token",
     #         "to": "global",
     #         "var": "token"
     #     }]
-    to_environment = False
-    to = extract.get("to", "global")
-    if to in ["global", "current"]:
-        to_environment = True
-        env_filename, env = json_helper.read_environment(to)
 
     # do the extraction, whether it's json_path or regex/text_pattern
     value = None
@@ -237,11 +233,15 @@ def process_one_extract(extract, response, extract_buffer):
     # write to target location/to
     # write to environment if that is the output
     # otherwise write to the buffer where we are collecting 1..n extracts
+    to = extract.get("to", "global")
     var = extract.get("var", "token")
     # print(f'var={var} value={value} to={to}')
-    if to_environment:
+    if to in ["global", "current"]:
+        env_filename, env = json_helper.read_environment(to)
         env[var] = value
         json_helper.write_environment(env_filename, env)
+    elif to == "keyring":
+        keyring.set_password("rc3", var, value)
     elif to == "stdout":
         extract_buffer.get("stdout")[var] = value
     elif to == "response":

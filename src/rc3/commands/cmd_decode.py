@@ -11,15 +11,15 @@ from rc3.common import json_helper, print_helper, config_helper, env_helper
 from rc3.common.data_helper import SCHEMA_BASE_URL, SCHEMA_PREFIX, SCHEMA_VERSION
 
 
-@click.command("decode", short_help="Decode a JWT stored in an ENVIRONMENT.")
-@click.argument('jwt_env_var', type=str, required=False)
-def cli(jwt_env_var):
+@click.command("decode", short_help="Decode a JWT stored in an ENV or KEYRING.")
+@click.argument('jwt_var', type=str, required=False)
+def cli(jwt_var):
     """\b
-    Will attempt to decode the JWT_ENV_VAR env var.
-    If no JWT_ENV_VAR argument is passed will attempt to decode the 'token' env var.
+    Will attempt to decode the JWT_VAR from the current or global environment, or keyring.
+    If no JWT_VAR argument is passed will attempt to decode the 'token' var name.
 
     """
-    var = 'token' if jwt_env_var is None else jwt_env_var
+    var = 'token' if jwt_var is None else jwt_var
     try:
         value = env_helper.lookup_one_var(var)
     except ClickException:

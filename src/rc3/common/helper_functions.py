@@ -45,7 +45,7 @@ def parse_env_var(var):
             var_name = var_parts[1]
             if env_name not in ['global', 'current']:
                 raise click.ClickException(
-                    f'Env name in {helper_name} helper function must be global or current. [{env_name}] is invalid!')
+                    f'Env name in {helper_name} helper function must be global, current or keyring. [{env_name}] is invalid!')
     return env_name, var_name
 
 
@@ -65,12 +65,15 @@ def pkce_cvcc(var):
     # generate cv and cc
     cv, cc = pkce.generate_pkce_pair()
 
-    # store cv into global env
-    env_filename, env = json_helper.read_environment(env_name)
-    env[var_name] = cv
-    json_helper.write_environment(env_filename, env)
+    # store cv into env or keyring
+    if env_name == "keyring":
+        keyring.set_password("rc3", var_name, cv)
+    else:
+        env_filename, env = json_helper.read_environment(env_name)
+        env[var_name] = cv
+        json_helper.write_environment(env_filename, env)
 
-    # bust the cache, so future reads in same process see the change
+    # bust the cache, so future reads in same process see the change in the env
     decorators.rc_clear_cache('read_environment')
 
     # return cc, to be populated in template
@@ -92,11 +95,14 @@ def uuid_helper(var):
     # generate
     value = str(uuid.uuid4())
 
-    # store in env
+    # store in env or keyring
     if var_name is not None:
-        env_filename, env = json_helper.read_environment(env_name)
-        env[var_name] = value
-        json_helper.write_environment(env_filename, env)
+        if env_name == "keyring":
+            keyring.set_password("rc3", var_name, value)
+        else:
+            env_filename, env = json_helper.read_environment(env_name)
+            env[var_name] = value
+            json_helper.write_environment(env_filename, env)
 
     # bust the cache, so future reads in same process see the change
     decorators.rc_clear_cache('read_environment')
