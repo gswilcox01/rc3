@@ -43,7 +43,7 @@ def parse_env_var(var):
         if len(var_parts) > 1:
             env_name = var_parts[0]
             var_name = var_parts[1]
-            if env_name not in ['global', 'current']:
+            if env_name not in ['global', 'current', 'keyring']:
                 raise click.ClickException(
                     f'Env name in {helper_name} helper function must be global, current or keyring. [{env_name}] is invalid!')
     return env_name, var_name
