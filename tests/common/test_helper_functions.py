@@ -160,7 +160,7 @@ def test_file_helper(example_collection, json_file):
     assert s == s2
 
 
-def test_keyring_prompt_helper(monkeypatch):
+def test_keyring_prompt_helper(example_collection, monkeypatch):
     # Negative test
     with pytest.raises(ClickException, match=r'The #keyring_prompt helper function requires exactly 1 parameter'):
         helper_functions.lookup_helper_value("#keyring_prompt")
@@ -191,7 +191,7 @@ def test_keyring_prompt_helper(monkeypatch):
     assert s == "my_secret"
 
 
-def test_keyring_prompt_no_prompt(monkeypatch):
+def test_keyring_prompt_no_prompt(example_collection, monkeypatch):
     # setup an existing password in the keyring (prompt shouldn't happen)
     keyring.set_password("rc3", "test_prompt", "hello mom!")
     # setup mock for click.prompt
@@ -209,7 +209,7 @@ def test_keyring_prompt_no_prompt(monkeypatch):
     assert s == "hello mom!"
 
 
-def test_keyring_helper():
+def test_keyring_helper(example_collection):
     # Negative test
     with pytest.raises(ClickException, match=r'The #keyring helper function requires exactly 1 parameter'):
         helper_functions.lookup_helper_value("#keyring")
