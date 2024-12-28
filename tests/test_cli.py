@@ -24,7 +24,7 @@ def test_any_command_creates_initialized_rc_home(clean_home, runner):
 
     # test it exists now AND is empty
     assert os.path.exists(rc_home)
-    assert len(os.listdir(rc_home)) == 2
+    assert len(os.listdir(rc_home)) == 3
 
 
 def test_shortcuts_work(example_collection, runner):

@@ -10,7 +10,7 @@ import click
 from rc3.commands import cmd_list
 from rc3.common import json_helper, print_helper, config_helper, data_helper
 from rc3.common.data_helper import SCHEMA_BASE_URL, SCHEMA_PREFIX, SCHEMA_VERSION, SETTINGS_FILENAME, \
-    GLOBAL_ENV_FILENAME
+    GLOBAL_ENV_FILENAME, KEYRING_FILENAME
 
 
 @click.command("upgrade", short_help="Attempt to upgrade the current COLLECTION.")
@@ -50,6 +50,15 @@ def check_home_schemas():
             click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
         buffer.append(f'global_env schema is({global_env['$schema']}) but should be({env_schema['$id']})')
 
+    # check keyring
+    keyring_fn = os.path.join(home, KEYRING_FILENAME)
+    keyring_history = json_helper.read_json(keyring_fn)
+    keyring_schema = json_helper.read_schema('keyring')
+    if keyring_history['$schema'] != keyring_schema['$id']:
+        if len(buffer) == 0:
+            click.echo(click.style(f' UPGRADES NEEDED', fg='red'))
+        buffer.append(f'keyring_history schema is({keyring_history['$schema']}) but should be({keyring_schema['$id']})')
+
     if len(buffer) == 0:
         click.echo(click.style(f' OK', fg='green'))
         return
@@ -66,6 +75,9 @@ def check_home_schemas():
     if global_env['$schema'] != env_schema['$id']:
         global_env['$schema'] = env_schema['$id']
         json_helper.write_environment(GLOBAL_ENV_FILENAME, global_env)
+    if keyring_history['$schema'] != keyring_schema['$id']:
+        keyring_history['$schema'] = keyring_schema['$id']
+        json_helper.write_environment(KEYRING_FILENAME, keyring_history)
     click.echo(click.style(f' SUCCESS', fg='green'))
 
 

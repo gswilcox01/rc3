@@ -12,7 +12,8 @@ from requests.auth import HTTPBasicAuth, AuthBase
 from requests.exceptions import SSLError
 
 from rc3.commands import cmd_request
-from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals, file_helper, decorators
+from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc_globals, file_helper, decorators, \
+    keyring_helper
 
 
 @click.command("send", short_help="Sends an HTTP request & writes results to a response file.")
@@ -241,7 +242,7 @@ def process_one_extract(extract, response, extract_buffer):
         env[var] = value
         json_helper.write_environment(env_filename, env)
     elif to == "keyring":
-        keyring.set_password("rc3", var, value)
+        keyring_helper.set_value(var, value)
     elif to == "stdout":
         extract_buffer.get("stdout")[var] = value
     elif to == "response":

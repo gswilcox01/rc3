@@ -11,11 +11,13 @@ COLLECTION_FILENAME = "rc-collection.json"
 FOLDER_FILENAME = "rc-folder.json"
 SETTINGS_FILENAME = "rc-settings.json"
 GLOBAL_ENV_FILENAME = "rc-global.json"
+KEYRING_FILENAME = "rc-keyring.json"
 VERSION_MAP = {
     'auth': SCHEMA_VERSION,
     'collection': SCHEMA_VERSION,
     'environment': '0.0.10',
     'folder': SCHEMA_VERSION,
+    'keyring': '0.0.13',
     'request': '0.0.13',
     'settings': SCHEMA_VERSION
 }

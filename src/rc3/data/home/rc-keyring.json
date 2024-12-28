@@ -1,0 +1,8 @@
+{
+    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.13b1/src/rc3/data/schemas/rc3-keyring-0.0.13.json",
+    "entries": [
+        {
+            "name": "test"
+        }
+    ]
+}

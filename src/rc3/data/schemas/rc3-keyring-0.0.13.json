@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.13b1/src/rc3/data/schemas/rc3-keyring-0.0.13.json",
+    "title": "rc3 keyring",
+    "description": "RC keyring history information",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "description": "The JSON schema to use for validation",
+            "type": "string"
+        },
+        "entries": {
+            "description": "The list of keyring entries that have previously been put into this users OS keyring",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/entries_ref"
+            }
+        }
+    },
+    "additionalProperties": false,
+    "$defs": {
+        "entries_ref": {
+            "type" : "object",
+            "properties": {
+                "name": {"type": "string"},
+                "created": {"type": "string", "format":  "date-time"},
+                "modified": {"type": "string", "format":  "date-time"},
+                "accessed": {"type": "string", "format":  "date-time"}
+            },
+            "additionalProperties": false
+        }
+    }
+}

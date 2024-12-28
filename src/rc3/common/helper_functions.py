@@ -8,7 +8,7 @@ import keyring
 import pkce
 from click import prompt
 
-from rc3.common import json_helper, print_helper, decorators, file_helper
+from rc3.common import json_helper, print_helper, decorators, file_helper, keyring_helper
 
 
 def lookup_helper_value(var):
@@ -27,7 +27,7 @@ def lookup_helper_value(var):
     if var.startswith("#keyring_prompt"):
         return keyring_prompt_helper(var)
     if var.startswith("#keyring"):
-        return keyring_helper(var)
+        return keyring_helper_function(var)
     raise click.ClickException(
         f'handlebar helper_function [{var}] is invalid!')
 
@@ -67,7 +67,7 @@ def pkce_cvcc(var):
 
     # store cv into env or keyring
     if env_name == "keyring":
-        keyring.set_password("rc3", var_name, cv)
+        keyring_helper.set_value(var_name, cv)
     else:
         env_filename, env = json_helper.read_environment(env_name)
         env[var_name] = cv
@@ -98,7 +98,7 @@ def uuid_helper(var):
     # store in env or keyring
     if var_name is not None:
         if env_name == "keyring":
-            keyring.set_password("rc3", var_name, value)
+            keyring_helper.set_value(var_name, value)
         else:
             env_filename, env = json_helper.read_environment(env_name)
             env[var_name] = value
@@ -152,24 +152,24 @@ def keyring_prompt_helper(var):
     if len(parts) != 2:
         raise click.ClickException(f'The {helper_name} helper function requires exactly 1 parameter')
     name = parts[1]
-    value = keyring.get_password("rc3", name)
+    value = keyring_helper.get_value(name)
     if value is None:
         print(f'Your keyring doesn\'t contain a value for NAME({name})"')
         print('Prompting for a value rc will use with this request AND store in your keyring')
         _prompt = f"Please enter a value for NAME({name})"
         value = click.prompt(_prompt, default=None, hide_input=True)
-        keyring.set_password("rc3", name, value)
+        keyring_helper.set_value(name, value)
         return value
     return value
 
 
-def keyring_helper(var):
+def keyring_helper_function(var):
     parts = var.split()
     helper_name = parts[0]
     if len(parts) != 2:
         raise click.ClickException(f'The {helper_name} helper function requires exactly 1 parameter')
     name = parts[1]
-    value = keyring.get_password("rc3", name)
+    value = keyring_helper.get_value(name)
     if value is None:
         raise click.ClickException(f'The {helper_name} helper function requires the NAME({name}) parameter to exist '
                                    f'in the keyring.  Please see the \'rc keyring\' command for setting values in the '

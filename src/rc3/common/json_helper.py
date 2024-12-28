@@ -9,7 +9,7 @@ from jsonschema import Draft7Validator
 from referencing import Registry, Resource
 from rc3.common import config_helper, data_helper, print_helper
 from rc3.common.data_helper import SCHEMA_PREFIX, SCHEMA_VERSION, COLLECTION_FILENAME, SETTINGS_FILENAME, \
-    FOLDER_FILENAME, GLOBAL_ENV_FILENAME
+    FOLDER_FILENAME, GLOBAL_ENV_FILENAME, KEYRING_FILENAME
 from rc3.common.decorators import rc_print_durations, rc_memoized
 
 
@@ -22,6 +22,8 @@ def guess_schema(filename):
         return 'environment'
     if filename == FOLDER_FILENAME:
         return 'folder'
+    if filename == KEYRING_FILENAME:
+        return 'keyring'
     if filename.endswith('.request'):
         return 'request'
     # default, because it's the only one that can't be guessed based on filename
@@ -193,6 +195,18 @@ def read_settings():
 def write_settings(settings):
     home = config_helper.get_config_folder()
     write_json(os.path.join(home, SETTINGS_FILENAME), settings)
+
+
+@rc_print_durations
+@rc_memoized
+def read_keyring():
+    home = config_helper.get_config_folder()
+    return load_and_validate(KEYRING_FILENAME, _dir=home)
+
+
+def write_keyring(keyring_history):
+    home = config_helper.get_config_folder()
+    write_json(os.path.join(home, KEYRING_FILENAME), keyring_history)
 
 
 @rc_print_durations

@@ -4,7 +4,7 @@ import re
 import click
 import keyring
 
-from rc3.common import json_helper, print_helper, helper_functions, decorators
+from rc3.common import json_helper, print_helper, helper_functions, decorators, keyring_helper
 
 PATTERN = re.compile(r'{{(.*?)}}')
 JSON_FILE_PATTERN = re.compile(r'"{{(.*?#file.*?)}}"')
@@ -83,7 +83,7 @@ def lookup_var_value(envs, var, seen=None):
     # if not found in any ENV, before returning an error, attempt to lookup in keyring
     parts = var.split()
     if len(parts) == 1:
-        value = keyring.get_password("rc3", var)
+        value = keyring_helper.get_value(var)
         # only use value from keyring if there and longer than 0
         if value is not None and len(value) > 0:
             return value
