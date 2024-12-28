@@ -13,7 +13,7 @@ from rc3.common.data_helper import SCHEMA_BASE_URL, SCHEMA_PREFIX, SCHEMA_VERSIO
     GLOBAL_ENV_FILENAME, KEYRING_FILENAME
 
 
-@click.command("upgrade", short_help="Attempt to upgrade the current COLLECTION.")
+@click.command("upgrade", short_help="Upgrade schemas & files in current COLLECTION & RC_HOME.")
 def cli():
     """\b
     Upgrade the current collection where possible to your current version of the rc CLI.

@@ -16,7 +16,7 @@ from rc3.common import json_helper, print_helper, env_helper, inherit_helper, rc
     keyring_helper
 
 
-@click.command("send", short_help="Sends an HTTP request & writes results to a response file.")
+@click.command("send", short_help="Sends an HTTP request & writes response to STDOUT.")
 @click.option('-p', '--pick', is_flag=True, default=False, help="Pick a REQUEST then send it.")
 @click.option('-e', '--edit', is_flag=True, default=False, help="Edit a REQUEST then send it.")
 @click.option('-f', '--file', type=click.Path(exists=True, readable=True, allow_dash=True, dir_okay=False), help="File to send as REQUEST body.")
