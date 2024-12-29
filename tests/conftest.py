@@ -6,6 +6,7 @@ import pytest
 from click.testing import CliRunner
 
 from rc3 import cli
+from rc3.common import json_helper
 
 
 @pytest.fixture(scope="function")
@@ -42,12 +43,12 @@ def no_durations(monkeypatch):
     yield "False"
 
 
-@pytest.fixture(scope="function")
-def clean_rc(clean_home, monkeypatch):
-    rc_home = os.path.join(clean_home, '.rc')
-    os.mkdir(rc_home)
-    monkeypatch.setenv('RC_HOME', rc_home)
-    yield rc_home
+# @pytest.fixture(scope="function")
+# def clean_rc(clean_home, monkeypatch):
+#     rc_home = os.path.join(clean_home, '.rc')
+#     os.mkdir(rc_home)
+#     monkeypatch.setenv('RC_HOME', rc_home)
+#     yield rc_home
 
 
 @pytest.fixture(scope="function", autouse=True)
