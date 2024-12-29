@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import keyring
+from keyring.errors import PasswordDeleteError
 
 from rc3.common import json_helper
 
@@ -61,7 +62,11 @@ def get_value(name):
 
 
 def delete_value(name):
-    keyring.delete_password("rc3", name)
+    try:
+        keyring.delete_password("rc3", name)
+    except PasswordDeleteError as e:
+        pass
+
     delete_from_history(name)
 
 

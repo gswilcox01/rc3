@@ -59,7 +59,8 @@ def print_text(response):
 
 
 def left_format(_list, field, header_len):
-    max_len = max(len(str(obj[field])) for obj in _list)
+    # max_len = max(len(str(obj[field])) for obj in _list)
+    max_len = max(len(str(obj.get(field,"-"))) for obj in _list)
     max_len = max(max_len, header_len)
     this_format = '{:<' + str(max_len + 3) + '}'
     return this_format
@@ -78,6 +79,6 @@ def print_formatted_table(header, fields, _list):
         # first convert into a list of values (instead of a dict/object)
         new_row = []
         for field in fields:
-            new_row.append(row[field])
+            new_row.append(row.get(field, "-"))
         # then print it
         print(line_format.format(*new_row))

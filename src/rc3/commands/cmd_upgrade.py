@@ -86,6 +86,9 @@ def check_collection_schemas():
 
     # check for current collection
     c, wrapper = json_helper.read_current_collection()
+    if c is None:
+        click.echo(click.style(f' No current COLLECTION exists', fg='red'))
+        return
     c_folder = wrapper['_dir']
     update_files = {}
 
@@ -134,6 +137,9 @@ def check_collection_examples():
 
     # determine current collection examples folder
     c, wrapper = json_helper.read_current_collection()
+    if c is None:
+        click.echo(click.style(f' No current COLLECTION exists', fg='red'))
+        return
     c_folder = wrapper['_dir']
     examples_folder = os.path.join(c_folder, 'examples')
 

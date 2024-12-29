@@ -1,6 +1,8 @@
+import copy
 import json
 import os
 import sys
+from datetime import datetime
 from json import JSONDecodeError
 
 import click
@@ -228,6 +230,8 @@ def find_current_collection():
 @rc_memoized
 def read_current_collection():
     current = find_current_collection()
+    if current is None:
+        return None, None
     c = load_and_validate(COLLECTION_FILENAME, _dir=current['location'])
     return c, {
         '_dir': current['location'],
@@ -357,6 +361,29 @@ def read_collection_list():
             'name': c['name'],
             'location': c['location']
         })
+    return _list
+
+
+@rc_print_durations
+@rc_memoized
+def read_keyring_entry_list():
+    keyring_history = read_keyring()
+    entries = copy.deepcopy(keyring_history['entries'])
+    _list = sorted(entries, key=lambda e: e['name'])
+
+    idx = 0
+    for entry in _list:
+        idx = idx + 1
+        number = str(idx)
+        # if current:
+        # current = True
+        # number += '*'
+        entry['_index'] = idx - 1
+        entry['number'] = number
+        entry['display_num'] = number
+        entry['display_created'] = datetime.fromisoformat(entry['created']).strftime("%x %X") if "created" in entry else "-"
+        entry['display_accessed'] = datetime.fromisoformat(entry['accessed']).strftime("%x %X") if "accessed" in entry else "-"
+        entry['display_modified'] = datetime.fromisoformat(entry['modified']).strftime("%x %X") if "modified" in entry else "-"
     return _list
 
 

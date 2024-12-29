@@ -28,16 +28,16 @@ def test_get_set_delete(example_collection, runner):
     assert "None" in result.output
 
 
-def test_set_is_default(example_collection, runner):
-    result = runner.invoke(cli.cli, ['keyring', 'secret'], input="secret_password\n")
+def test_get_is_default(example_collection, runner):
+    result = runner.invoke(cli.cli, ['keyring', '--set', 'secret'], input="secret_password\n")
     assert result.exit_code == 0
-    result = runner.invoke(cli.cli, ['keyring', '--get', 'secret'])
+    result = runner.invoke(cli.cli, ['keyring', 'secret'])
     assert result.exit_code == 0
     assert "secret_password" in result.output
 
     result = runner.invoke(cli.cli, ['keyring', '--del', 'secret'])
     assert result.exit_code == 0
-    result = runner.invoke(cli.cli, ['keyring', '--get', 'secret'])
+    result = runner.invoke(cli.cli, ['keyring', 'secret'])
     assert result.exit_code == 0
     assert "None" in result.output
 
