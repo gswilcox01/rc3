@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json.schemastore.org/rc3-environment-0.0.3.json",
+    "$schema": "https://cdn.statically.io/gh/gswilcox01/rc3/v0.0.10/src/rc3/data/schemas/rc3-environment-0.0.10.json",
     "property1": "value1",
     "property2": "value2"
 }
