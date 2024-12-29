@@ -22,9 +22,9 @@ This page documents some additional commands that didn't make sense to add to th
   Checking current COLLECTION validating JSON against current schemas... NOT IMPLEMENTED YET
   ```
 ## rc decode
-* This is a simple command that will decode a JWT in an environment & display the results
-* By default it will attempt to decode an env var named "token"
-* An optional JWT_ENV_VAR argument may be passed if you have a different env var to decode
+* This is a simple command that will decode a JWT in an environment (or keyring) & display the results
+* By default it will attempt to decode a var named "token" (which exists in an env or keyring)
+* An optional JWT_VAR argument may be passed if you have a different var name to decode
 * An example:
   ```
   $ rc decode
@@ -55,7 +55,7 @@ This page documents some additional commands that didn't make sense to add to th
 * Other keyrings/backends are available, but YMMV, see: https://github.com/jaraco/keyring
 * An example setting a value for the name "password":
   ```
-  $ rc keyring password
+  $ rc keyring --set password
   Please enter a value for NAME(password):
   ```
 * An example inspecting a value for the name "password" (Note: you won't normally do this unless you want to double-check what value you have stored in the keyring):

@@ -282,6 +282,7 @@ If you'd like to install with "pipx" in Windows that works fine as well, but is 
   * "global" --- will extract to the global env (this is the default)
   * "stdout" --- will replace the normal stdout, to just the extracted value(s)
   * "response" --- will extract to the verbose .response file that is generated
+  * "keyring" --- will extract to your OS Keyring (KeyChain or Windows Cred Locker)
 * Read more about Json Path here:
   * https://www.digitalocean.com/community/tutorials/python-jsonpath-examples
   * https://www.baeldung.com/guide-to-jayway-jsonpath

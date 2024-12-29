@@ -7,9 +7,12 @@
 
 ## #uuid helper function
 * This helper function will be replaced with a newly generated UUID
-* An optional parameter can trigger ALSO saving this UUID into an environment var
+* An optional parameter can trigger ALSO saving this UUID into an environment var or keyring
   * By default the env var will be saved into the global env
-  * You may also prefix the env var with "global." or "current." to save in a different env
+* You may optionally prefix the var name with "global.", "current." or "keyring."
+  * "global.nonce" will also save the value in the global env, in a var named "nonce"
+  * "current.nonce" will also save the value in the current env, in a var named "nonce"
+  * "keyring.nonce" will also save the value in your OS Keyring, in a var named "nonce"
 * An example using this in an Oauth2 flow for state & nonce query parameters:
   ```
   "params": {
@@ -23,9 +26,11 @@
   * The code_verifier is saved into an env var
   * The code_challenge replaces the handlebar expression in your template
 * An optional parameter can be passed to save the code_verifier in a specific env var
-  * If no parameter is passed the code_verifier will be stored in the global env in an env var named code_verifier 
-  * By default the env var will be saved into the global env
-  * You may also prefix the env var with "global." or "current." to save in a different env
+  * By default the env var will be saved into the global env, in a var named "code_verifier"
+* You may optionally pass a parameter to store the code_verifier in a specific env
+  * "global.cv" will save the value in the global env, in a var named "cv"
+  * "current.cv" will save the value in the current env, in a var named "cv"
+  * "keyring.cv" will save the value in your OS Keyring, in a var named "cv"
 * An example using this in an Oauth2 PKCE flow query parameters:
   ```
   "params": {
