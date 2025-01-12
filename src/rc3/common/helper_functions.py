@@ -6,7 +6,8 @@ import uuid
 import click
 import keyring
 import pkce
-from click import prompt
+from click import prompt, ParamType
+from click.types import StringParamType
 
 from rc3.common import json_helper, print_helper, decorators, file_helper, keyring_helper
 
@@ -20,6 +21,10 @@ def lookup_helper_value(var):
         return uuid_helper(var)
     if var.startswith("#secure_prompt"):
         return secure_prompt_helper(var)
+    if var.startswith("#prompt_float"):
+        return prompt_float_helper(var)
+    if var.startswith("#prompt_int"):
+        return prompt_int_helper(var)
     if var.startswith("#prompt"):
         return prompt_helper(var)
     if var.startswith("#file"):
@@ -115,7 +120,15 @@ def secure_prompt_helper(var):
     return prompt_helper(var, secure=True)
 
 
-def prompt_helper(var, secure=False):
+def prompt_float_helper(var):
+    return prompt_helper(var, _type=click.FLOAT)
+
+
+def prompt_int_helper(var):
+    return prompt_helper(var, _type=click.INT)
+
+
+def prompt_helper(var, _type=None, secure=False):
     parts = var.split()
     helper_name = parts[0]
     if len(parts) < 2:
@@ -129,8 +142,35 @@ def prompt_helper(var, secure=False):
         p = parts[0]
         default = parts[1]
 
+    if len(default.strip()) == 0:
+        default = ""
+    elif _type == click.FLOAT:
+        if not is_float(default):
+            raise click.ClickException(f'Default value for {helper_name} must be a valid number!')
+        default = float(default)
+    elif _type == click.INT:
+        if not is_int(default):
+            raise click.ClickException(f'Default value for {helper_name} must be a valid integer!')
+        default = int(default)
+
     # prompt for value, and return
-    return click.prompt(p, default=default, hide_input=secure)
+    return click.prompt(p, type=_type, default=default, hide_input=secure)
+
+
+def is_float(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
+
+def is_int(string):
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
 
 
 def file_helper_function(var):

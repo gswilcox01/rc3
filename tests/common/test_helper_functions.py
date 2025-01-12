@@ -93,11 +93,12 @@ def test_prompt_helper(example_collection, monkeypatch):
 
     # Test with no default
     # mock click.prompt
-    def mock_prompt(text, default, hide_input):
+    def mock_prompt(text, type, default, hide_input):
         assert text == "What would you like for Christmas?"
         assert default == ""
         assert hide_input is False
         return "toys"
+
     monkeypatch.setattr(click, 'prompt', mock_prompt)
 
     s = helper_functions.lookup_helper_value("#prompt What would you like for Christmas?")
@@ -105,11 +106,12 @@ def test_prompt_helper(example_collection, monkeypatch):
 
     # Test with default value after ":"
     # mock click.prompt
-    def mock_prompt(text, default, hide_input):
+    def mock_prompt(text, type, default, hide_input):
         assert text == "What would you like for Christmas?"
         assert default == "Whirled Peas"
         assert hide_input is False
         return "A Pony"
+
     monkeypatch.setattr(click, 'prompt', mock_prompt)
 
     s = helper_functions.lookup_helper_value("#prompt What would you like for Christmas?:Whirled Peas")
@@ -125,11 +127,12 @@ def test_secure_prompt_helper(example_collection, monkeypatch):
 
     # Test with no default
     # mock click.prompt
-    def mock_prompt(text, default, hide_input):
+    def mock_prompt(text, type, default, hide_input):
         assert text == "What would you like for Christmas?"
         assert default == ""
         assert hide_input is True
         return "toys"
+
     monkeypatch.setattr(click, 'prompt', mock_prompt)
 
     s = helper_functions.lookup_helper_value("#secure_prompt What would you like for Christmas?")
@@ -173,12 +176,14 @@ def test_keyring_prompt_helper(example_collection, monkeypatch):
     except PasswordDeleteError:
         # just ignore this error if nothing was deleted
         pass
+
     # setup mock for click.prompt
     def mock_prompt(text, default, hide_input):
         assert text == f"Please enter a value for NAME(test_prompt)"
         assert default is None
         assert hide_input is True
         return "my_secret"
+
     monkeypatch.setattr(click, 'prompt', mock_prompt)
     before = keyring.get_password("rc3", "test_prompt")
 
@@ -194,9 +199,11 @@ def test_keyring_prompt_helper(example_collection, monkeypatch):
 def test_keyring_prompt_no_prompt(example_collection, monkeypatch):
     # setup an existing password in the keyring (prompt shouldn't happen)
     keyring.set_password("rc3", "test_prompt", "hello mom!")
+
     # setup mock for click.prompt
     def mock_prompt(text, default, hide_input):
         assert False, "prompt shouldn't be called!"
+
     monkeypatch.setattr(click, 'prompt', mock_prompt)
     before = keyring.get_password("rc3", "test_prompt")
 
@@ -221,4 +228,3 @@ def test_keyring_helper(example_collection):
     keyring.set_password("rc3", "test_name", "test_password")
     s = helper_functions.lookup_helper_value("#keyring test_name")
     assert s == "test_password"
-

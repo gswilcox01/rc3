@@ -5,8 +5,10 @@ import click
 import keyring
 
 from rc3.common import json_helper, print_helper, helper_functions, decorators, keyring_helper
+from rc3.common.helper_functions import is_float, is_int
 
 PATTERN = re.compile(r'{{(.*?)}}')
+PROMPT_PATTERN = re.compile(r'"({{(.*?#prompt.*?)}})"')
 JSON_FILE_PATTERN = re.compile(r'"{{(.*?#file.*?)}}"')
 
 
@@ -123,8 +125,25 @@ def sub_file_in_json_string(envs, s):
 def sub_in_string(envs, s):
     if s is None:
         return None
-    # pattern = re.compile(r'{{(.*?)}}')
+    # process all #prompt helper functions first
+    # this make ALL prompts be 1 per double-quoted string!, which should be ok...
+    for match in PROMPT_PATTERN.finditer(s):
+        # this pattern includes surrounding double quotes!
+        # PROMPT_PATTERN = re.compile(r'"({{(.*?#prompt.*?)}})"')
+        var = match.group(2).strip()
+        var_value = lookup_var_value(envs, var)
+        if isinstance(var_value, float) or isinstance(var_value, int):
+            var_value = str(var_value)
+            # if value is numeric, replace the entire match (group 0) including double quotes!
+            s = s.replace(match.group(0), var_value)
+        else:
+            # if value is NOT numeric, replace just what is inside the double quotes
+            s = s.replace(match.group(1), var_value)
+
+    # next process all other (non prompt) handlebars
     for match in PATTERN.finditer(s):
+        # this pattern DOES NOT include surrounding double quotes!
+        # PATTERN = re.compile(r'{{(.*?)}}')
         var = match.group(1).strip()
         var_value = lookup_var_value(envs, var)
         s = s.replace(match.group(0), var_value)
